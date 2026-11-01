@@ -1,0 +1,6 @@
+{
+  "name": "Syllabu Coastal EdTech",
+  "description": "One tap to your exact college syllabus: peer-verified notes and quick video summaries for Visakhapatnam Engineering & Degree Colleges.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
