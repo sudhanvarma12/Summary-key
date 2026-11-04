@@ -5,6 +5,7 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
+    base: './', // Ensures all asset paths in dist/index.html use relative paths (./assets/...) fixing GitHub Pages blank white page
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {

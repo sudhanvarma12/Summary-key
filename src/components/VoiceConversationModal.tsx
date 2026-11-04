@@ -242,7 +242,7 @@ export const VoiceConversationModal: React.FC<VoiceConversationModalProps> = ({
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="font-display font-bold text-lg text-white">
-                  Passkey Gemini Voice Tutor
+                  SummaryKey Gemini Voice Tutor
                 </h3>
                 <span className="bg-emerald-400/20 text-emerald-300 border border-emerald-400/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
                   Live AI

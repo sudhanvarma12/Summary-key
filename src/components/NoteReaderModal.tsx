@@ -142,7 +142,7 @@ export const NoteReaderModal: React.FC<NoteReaderModalProps> = ({
   };
 
   const handleCopySummary = () => {
-    const text = `Passkey CBSE Study Guide\nChapter: Unit ${unit.unitNumber} - ${unit.title}\nSubject: ${subject.name} (${subject.semesterOrGrade})\n\nTopics At A Glance:\n${currentGlance.map(g => `• ${g.topic}: ${g.quickTake}\n  - ${g.keyPoints.join('\n  - ')}`).join('\n\n')}\n\nMindmap Branches:\n${currentMindmap.branches.map(b => `${b.title}:\n  ${b.subtopics.join(', ')}\n  Pro-Tip: ${b.examTip}`).join('\n\n')}`;
+    const text = `SummaryKey CBSE Study Guide\nChapter: Unit ${unit.unitNumber} - ${unit.title}\nSubject: ${subject.name} (${subject.semesterOrGrade})\n\nTopics At A Glance:\n${currentGlance.map(g => `• ${g.topic}: ${g.quickTake}\n  - ${g.keyPoints.join('\n  - ')}`).join('\n\n')}\n\nMindmap Branches:\n${currentMindmap.branches.map(b => `${b.title}:\n  ${b.subtopics.join(', ')}\n  Pro-Tip: ${b.examTip}`).join('\n\n')}`;
     navigator.clipboard.writeText(text);
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 2000);
@@ -334,7 +334,7 @@ export const NoteReaderModal: React.FC<NoteReaderModalProps> = ({
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <span className="text-xs font-bold text-blue-700 tracking-wider uppercase flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
-                  PASSKEY VERIFIED COURSEWARE • {subject.regulationOrBoard}
+                  SUMMARYKEY VERIFIED COURSEWARE • {subject.regulationOrBoard}
                 </span>
                 <span className="text-xs text-slate-500 font-mono">
                   {unit.fileSize} • {unit.pdfPages} Pages

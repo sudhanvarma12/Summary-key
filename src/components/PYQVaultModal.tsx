@@ -68,7 +68,7 @@ export const PYQVaultModal: React.FC<PYQVaultModalProps> = ({
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="font-display font-bold text-lg text-white">
-                  {language === 'te' ? 'పాస్కీ PYQ ఖజానా (గత పరీక్షల ప్రశ్నలు)' : 'Passkey PYQ Vault (Previous Year Questions)'}
+                  {language === 'te' ? 'సమ్మరీకీ PYQ ఖజానా (గత పరీక్షల ప్రశ్నలు)' : 'SummaryKey PYQ Vault (Previous Year Questions)'}
                 </h3>
                 <span className="bg-cyan-400/20 text-cyan-200 border border-cyan-400/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
                   Solved with Marking Schemes

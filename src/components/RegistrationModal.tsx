@@ -77,7 +77,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
 
     setCurrentUser(newUser);
     setActiveTab('features');
-    setSuccessToast('Registration successful! Welcome to Passkey.');
+    setSuccessToast('Registration successful! Welcome to SummaryKey.');
     setTimeout(() => setSuccessToast(''), 3500);
   };
 

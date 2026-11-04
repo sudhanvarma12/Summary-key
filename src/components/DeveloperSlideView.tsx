@@ -41,8 +41,8 @@ export const DeveloperSlideView: React.FC<DeveloperSlideViewProps> = ({
             </h1>
             <p className="text-xs sm:text-sm text-slate-300 mt-1.5 max-w-2xl leading-relaxed">
               {language === 'te'
-                ? 'పాస్‌కీ వెబ్ ప్లాట్‌ఫారమ్ రూపకర్త, డెవలపర్స్ గ్రూప్, మరియు అధికారిక అభివృద్ధి తేదీ వివరాలు.'
-                : 'Core architecture, developer profile, engineering group, and system release information for Passkey.'}
+                ? 'సమ్మరీకీ వెబ్ ప్లాట్‌ఫారమ్ రూపకర్త, డెవలపర్స్ గ్రూప్, మరియు అధికారిక అభివృద్ధి తేదీ వివరాలు.'
+                : 'Core architecture, developer profile, engineering group, and system release information for SummaryKey.'}
             </p>
           </div>
 
@@ -87,7 +87,7 @@ export const DeveloperSlideView: React.FC<DeveloperSlideViewProps> = ({
               Web Name
             </div>
             <div className="font-display text-2xl font-black text-slate-900 tracking-tight mt-1">
-              Passkey
+              SummaryKey
             </div>
             <p className="text-xs text-slate-600 mt-1">
               Next-generation syllabus discovery and academic mastery engine for Visakhapatnam.
@@ -100,7 +100,7 @@ export const DeveloperSlideView: React.FC<DeveloperSlideViewProps> = ({
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-black uppercase tracking-wider text-amber-800 bg-amber-100 px-2.5 py-1 rounded-md flex items-center gap-1">
               <Crown className="w-3 h-3 fill-amber-700 text-amber-700" />
-              CEO OF PASSKEY
+              CEO OF SUMMARYKEY
             </span>
             <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-500 text-white flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
               <User className="w-5 h-5" />
@@ -182,7 +182,7 @@ export const DeveloperSlideView: React.FC<DeveloperSlideViewProps> = ({
               <div className="w-full h-full bg-slate-950 rounded-2xl overflow-hidden relative flex flex-col items-center justify-center border border-white/20">
                 <img
                   src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
-                  alt="SUDHAN VARMA CH - CEO of Passkey"
+                  alt="SUDHAN VARMA CH - CEO of SummaryKey"
                   className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-300"
                   onError={(e) => {
                     // Elegant fallback if network image is blocked
@@ -210,7 +210,7 @@ export const DeveloperSlideView: React.FC<DeveloperSlideViewProps> = ({
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1 shadow-sm">
                   <Crown className="w-3.5 h-3.5 fill-slate-950" />
-                  CEO OF PASSKEY
+                  CEO OF SUMMARYKEY
                 </span>
                 <span className="bg-blue-100 text-blue-900 border border-blue-200 text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1.5 shadow-sm">
                   <GraduationCap className="w-3.5 h-3.5 text-blue-700" />
@@ -230,17 +230,17 @@ export const DeveloperSlideView: React.FC<DeveloperSlideViewProps> = ({
                 SUDHAN VARMA CH
               </h2>
               <p className="text-xs sm:text-sm text-slate-600 font-medium mt-0.5">
-                CEO OF PASSKEY • Principal Engineer • CodeForgers Engineering Group
+                CEO OF SUMMARYKEY • Principal Engineer • CodeForgers Engineering Group
               </p>
             </div>
           </div>
 
-          {/* Contact and Direct Channel - CEO OF PASSKEY Near Email */}
+          {/* Contact and Direct Channel - CEO OF SUMMARYKEY Near Email */}
           <div className="flex flex-col sm:flex-row lg:flex-col gap-2.5 w-full lg:w-auto items-start lg:items-end">
             <div className="flex items-center gap-2 flex-wrap justify-start lg:justify-end">
               <span className="bg-amber-400 text-slate-950 text-xs font-black px-2.5 py-1 rounded-lg uppercase tracking-wider shadow-sm flex items-center gap-1">
                 <Crown className="w-3 h-3 fill-slate-950" />
-                CEO OF PASSKEY
+                CEO OF SUMMARYKEY
               </span>
               <span className="bg-blue-50 text-blue-800 border border-blue-200 text-[11px] font-bold px-2.5 py-1 rounded-lg flex items-center gap-1">
                 <School className="w-3 h-3 text-blue-600" />
@@ -272,7 +272,7 @@ export const DeveloperSlideView: React.FC<DeveloperSlideViewProps> = ({
             <span>Developer Rationale & Engineering Blueprint</span>
           </div>
           <p className="text-xs sm:text-sm text-slate-700 leading-relaxed italic">
-            "Passkey was designed and built by <strong>SUDHAN VARMA CH</strong> (<strong>CEO OF PASSKEY</strong>, who <strong>studied in Visakha Valley School</strong>) under CodeForgers on <strong>30-10-2026</strong> to solve the fragmented study material problem in Visakhapatnam. Instead of students spending 14+ minutes hunting through spam-ridden Telegram and WhatsApp groups, Passkey delivers peer-audited unit notes, solved PYQ question vaults, interactive chapter MCQ quests, and real-time Gemini Voice AI clarification in under 2 seconds."
+            "SummaryKey was designed and built by <strong>SUDHAN VARMA CH</strong> (<strong>CEO OF SUMMARYKEY</strong>, who <strong>studied in Visakha Valley School</strong>) under CodeForgers on <strong>30-10-2026</strong> to solve the fragmented study material problem in Visakhapatnam. Instead of students spending 14+ minutes hunting through spam-ridden Telegram and WhatsApp groups, SummaryKey delivers peer-audited unit notes, solved PYQ question vaults, interactive chapter MCQ quests, and real-time Gemini Voice AI clarification in under 2 seconds."
           </p>
         </div>
 
@@ -280,7 +280,7 @@ export const DeveloperSlideView: React.FC<DeveloperSlideViewProps> = ({
         <div className="space-y-4">
           <h3 className="font-display text-lg font-bold text-slate-900 flex items-center gap-2">
             <Terminal className="w-5 h-5 text-blue-600" />
-            <span>Technical Infrastructure Built for Passkey</span>
+            <span>Technical Infrastructure Built for SummaryKey</span>
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -325,14 +325,14 @@ export const DeveloperSlideView: React.FC<DeveloperSlideViewProps> = ({
               Official System Dossier & Registration Table
             </span>
             <span className="text-[11px] font-mono text-slate-500 font-bold">
-              ID: PASSKEY-VZ-20261030
+              ID: SUMMARYKEY-VZ-20261030
             </span>
           </div>
 
           <div className="divide-y divide-slate-100 text-xs">
             <div className="grid grid-cols-1 sm:grid-cols-3 p-4 bg-white">
               <span className="font-semibold text-slate-500">Web Name</span>
-              <span className="sm:col-span-2 font-bold text-slate-900 text-sm">Passkey</span>
+              <span className="sm:col-span-2 font-bold text-slate-900 text-sm">SummaryKey</span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 p-4 bg-slate-50/50">
@@ -340,7 +340,7 @@ export const DeveloperSlideView: React.FC<DeveloperSlideViewProps> = ({
               <div className="sm:col-span-2 flex items-center gap-2 flex-wrap">
                 <span className="font-bold text-blue-900 text-sm">SUDHAN VARMA CH</span>
                 <span className="bg-amber-400 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded uppercase">
-                  CEO OF PASSKEY
+                  CEO OF SUMMARYKEY
                 </span>
               </div>
             </div>
@@ -368,7 +368,7 @@ export const DeveloperSlideView: React.FC<DeveloperSlideViewProps> = ({
               <div className="sm:col-span-2 flex items-center gap-2 flex-wrap">
                 <span className="font-mono text-slate-800 font-bold">sudhanvarma12@gmail.com</span>
                 <span className="bg-amber-400/30 text-amber-900 text-[10px] font-black px-2 py-0.5 rounded border border-amber-400/50 uppercase">
-                  CEO OF PASSKEY
+                  CEO OF SUMMARYKEY
                 </span>
               </div>
             </div>

@@ -127,13 +127,13 @@ export const BenchmarkModal: React.FC<BenchmarkModalProps> = ({
         {/* Side-by-Side Simulation Area */}
         <div className="flex-1 overflow-y-auto p-6 grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-50/50">
           
-          {/* PASSKEY (WINNER) */}
+          {/* SUMMARYKEY (WINNER) */}
           <div className="bg-white border-2 border-blue-500 rounded-2xl p-6 shadow-md flex flex-col justify-between space-y-4">
             <div>
               <div className="flex items-center justify-between">
                 <span className="font-display font-bold text-blue-700 text-lg flex items-center gap-2">
                   <span className="w-3 h-3 rounded-full bg-blue-600"></span>
-                  Passkey 1-Tap
+                  SummaryKey 1-Tap
                 </span>
                 <span className="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full">
                   ⚡ 94% FASTER
@@ -233,7 +233,7 @@ export const BenchmarkModal: React.FC<BenchmarkModalProps> = ({
             onClick={onClose}
             className="text-blue-600 font-semibold hover:underline"
           >
-            Back to Passkey
+            Back to SummaryKey
           </button>
         </div>
 

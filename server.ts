@@ -38,8 +38,8 @@ app.post('/api/gemini/voice-conversation', async (req: Request, res: Response) =
     if (!ai) {
       // Graceful fallback if API key is not yet configured in Secrets
       const fallbackReply = language === 'te'
-        ? `నమస్కారం! నేను పాస్కీ వాయిస్ AI ని. మీ ప్రశ్న "${message}" కు సమాధానం: మీ సిలబస్ ప్రకారం యూనిట్ నోట్స్ మరియు PYQ లు సిద్ధంగా ఉన్నాయి. దయచేసి API కీని సెట్టింగ్స్‌లో జోడించండి.`
-        : `Hello! I'm Passkey Voice AI. Regarding "${message}": For your exam preparation, focus on the step-by-step derivations and labeled diagrams in this unit. Please configure your GEMINI_API_KEY in the Secrets panel for real-time live AI responses!`;
+        ? `నమస్కారం! నేను సమ్మరీకీ వాయిస్ AI ని. మీ ప్రశ్న "${message}" కు సమాధానం: మీ సిలబస్ ప్రకారం యూనిట్ నోట్స్ మరియు PYQ లు సిద్ధంగా ఉన్నాయి. దయచేసి API కీని సెట్టింగ్స్‌లో జోడించండి.`
+        : `Hello! I'm SummaryKey Voice AI. Regarding "${message}": For your exam preparation, focus on the step-by-step derivations and labeled diagrams in this unit. Please configure your GEMINI_API_KEY in the Secrets panel for real-time live AI responses!`;
 
       res.json({
         reply: fallbackReply,
@@ -56,7 +56,7 @@ app.post('/api/gemini/voice-conversation', async (req: Request, res: Response) =
     const subjectInfo = context.subject || 'Syllabus';
     const unitInfo = context.unit ? `Unit/Chapter ${context.unit}` : 'General Syllabus';
 
-    const systemInstruction = `You are "Passkey Voice AI", the brilliant, energetic conversational voice tutor for school and college students in Visakhapatnam (including premier schools like Visakha Valley School, Timpany, DPS, as well as colleges like GVPCOE, GITAM, ANITS, Raghu, AUCOE).
+    const systemInstruction = `You are "SummaryKey Voice AI", the brilliant, energetic conversational voice tutor for school and college students in Visakhapatnam (including premier schools like Visakha Valley School, Timpany, DPS, as well as colleges like GVPCOE, GITAM, ANITS, Raghu, AUCOE).
 Current context:
 - Target Institution: ${institutionInfo}
 - Current Subject / Chapter: ${subjectInfo}
@@ -220,7 +220,7 @@ app.post('/api/gemini/complete-chapter', async (req: Request, res: Response) => 
       return;
     }
 
-    const prompt = `You are the master CBSE academic faculty and curriculum author for Passkey (premier student academic platform for schools like Visakha Valley School, DPS, Timpany, and colleges in Vizag).
+    const prompt = `You are the master CBSE academic faculty and curriculum author for SummaryKey (premier student academic platform for schools like Visakha Valley School, DPS, Timpany, and colleges in Vizag).
 Target Chapter: Unit/Chapter ${unitNumber}: ${chapterTitle}
 Subject: ${subjectName} (${grade} - New CBSE NCERT Rationalized Syllabus)
 Institution Context: ${institutionName}
@@ -335,7 +335,7 @@ async function startServer() {
   }
 
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Passkey full-stack server running on http://0.0.0.0:${PORT}`);
+    console.log(`SummaryKey full-stack server running on http://0.0.0.0:${PORT}`);
   });
 }
 

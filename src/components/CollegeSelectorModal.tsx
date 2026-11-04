@@ -172,8 +172,8 @@ export const CollegeSelectorModal: React.FC<CollegeSelectorModalProps> = ({
             <div>
               <h3 className="font-display font-bold text-lg text-white">
                 {language === 'te' 
-                  ? 'పాస్కీ సిలబస్ సెలెక్టర్: స్కూల్స్ & కాలేజీలు' 
-                  : 'Passkey Syllabus Selector: Schools & Colleges'}
+                  ? 'సమ్మరీకీ సిలబస్ సెలెక్టర్: స్కూల్స్ & కాలేజీలు' 
+                  : 'SummaryKey Syllabus Selector: Schools & Colleges'}
               </h3>
               <p className="text-xs text-blue-100 font-normal">
                 {language === 'te' 
@@ -375,7 +375,7 @@ export const CollegeSelectorModal: React.FC<CollegeSelectorModalProps> = ({
               className="px-3.5 py-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
             >
               <Mic className="w-3.5 h-3.5 text-indigo-600" />
-              <span>Ask Passkey Voice AI</span>
+              <span>Ask SummaryKey Voice AI</span>
             </button>
           </div>
 
@@ -522,7 +522,7 @@ export const CollegeSelectorModal: React.FC<CollegeSelectorModalProps> = ({
         {/* Footer */}
         <div className="bg-slate-100 border-t border-slate-200 px-6 py-3 flex items-center justify-between text-xs text-slate-600 shrink-0">
           <span>{currentInstitution.bannerBadge}</span>
-          <span>Passkey Verified Content Engine • Visakhapatnam</span>
+          <span>SummaryKey Verified Content Engine • Visakhapatnam</span>
         </div>
 
       </div>

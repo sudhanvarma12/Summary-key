@@ -63,7 +63,7 @@ export const InfoSlideView: React.FC<InfoSlideViewProps> = ({
               Slide 2 • Information & Documentation
             </span>
             <span className="text-xs text-blue-200">
-              Passkey Coastal EdTech
+              SummaryKey Coastal EdTech
             </span>
           </div>
           <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
@@ -167,7 +167,7 @@ export const InfoSlideView: React.FC<InfoSlideViewProps> = ({
             </h3>
 
             <p className="text-sm text-slate-600 leading-relaxed">
-              Passkey indexes curriculum documents strictly mapped to each syllabus code, board regulation, and exam schedule in Visakhapatnam.
+              SummaryKey indexes curriculum documents strictly mapped to each syllabus code, board regulation, and exam schedule in Visakhapatnam.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 pt-2">
@@ -321,7 +321,7 @@ export const InfoSlideView: React.FC<InfoSlideViewProps> = ({
                 </div>
                 <div className="mt-2 flex flex-wrap items-baseline gap-3">
                   <h1 className="font-display text-4xl sm:text-5xl font-extrabold text-white tracking-tight">
-                    Passkey
+                    SummaryKey
                   </h1>
                   <span className="text-slate-400 font-light text-2xl">by</span>
                   <span className="font-display text-3xl sm:text-4xl font-bold text-blue-300">
@@ -349,7 +349,7 @@ export const InfoSlideView: React.FC<InfoSlideViewProps> = ({
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className="text-[11px] font-black uppercase tracking-wider text-amber-950 bg-amber-400 px-2.5 py-0.5 rounded-full flex items-center gap-1 shadow-sm">
                           <Crown className="w-3 h-3 fill-slate-950" />
-                          CEO OF PASSKEY
+                          CEO OF SUMMARYKEY
                         </span>
                         <span className="text-[11px] font-bold uppercase tracking-wider text-blue-900 bg-blue-100 px-2.5 py-0.5 rounded-full flex items-center gap-1">
                           <GraduationCap className="w-3.5 h-3.5 text-blue-700" />
@@ -365,11 +365,11 @@ export const InfoSlideView: React.FC<InfoSlideViewProps> = ({
                     </div>
                   </div>
 
-                  {/* Contact Email Button with CEO OF PASSKEY badge */}
+                  {/* Contact Email Button with CEO OF SUMMARYKEY badge */}
                   <div className="flex flex-col sm:items-end gap-1.5 shrink-0">
                     <span className="text-[11px] font-black text-amber-300 uppercase tracking-wider flex items-center gap-1">
                       <Crown className="w-3 h-3 fill-amber-300" />
-                      CEO OF PASSKEY
+                      CEO OF SUMMARYKEY
                     </span>
                     <a 
                       href="mailto:sudhanvarma12@gmail.com"
@@ -383,14 +383,14 @@ export const InfoSlideView: React.FC<InfoSlideViewProps> = ({
 
                 {/* Developer Statement */}
                 <div className="border-t border-white/10 pt-4 text-xs sm:text-sm text-slate-200 leading-relaxed italic">
-                  "Passkey was architected and built by <strong>SUDHAN VARMA CH</strong> (<strong>CEO OF PASSKEY</strong>, who <strong>studied in Visakha Valley School</strong>) to eliminate academic chaos in Visakhapatnam. By bringing authentic, peer-verified syllabi, solved question vaults, chapter MCQ quests, and Gemini Voice AI into one seamless interface, every student can achieve exam clarity in under 2 seconds."
+                  "SummaryKey was architected and built by <strong>SUDHAN VARMA CH</strong> (<strong>CEO OF SUMMARYKEY</strong>, who <strong>studied in Visakha Valley School</strong>) to eliminate academic chaos in Visakhapatnam. By bringing authentic, peer-verified syllabi, solved question vaults, chapter MCQ quests, and Gemini Voice AI into one seamless interface, every student can achieve exam clarity in under 2 seconds."
                 </div>
 
                 {/* Attribution Matrix */}
                 <div className="grid grid-cols-2 sm:grid-cols-6 gap-2.5 pt-2 text-[11px]">
                   <div className="bg-black/30 p-3 rounded-xl border border-white/10">
                     <span className="text-slate-400 block font-normal">Platform Name</span>
-                    <span className="font-bold text-white text-sm">Passkey</span>
+                    <span className="font-bold text-white text-sm">SummaryKey</span>
                   </div>
                   <div className="bg-black/30 p-3 rounded-xl border border-white/10">
                     <span className="text-slate-400 block font-normal">Developers Group</span>
@@ -402,7 +402,7 @@ export const InfoSlideView: React.FC<InfoSlideViewProps> = ({
                   </div>
                   <div className="bg-black/30 p-3 rounded-xl border border-white/10">
                     <span className="text-slate-400 block font-normal">Title</span>
-                    <span className="font-bold text-amber-400 text-xs">CEO OF PASSKEY</span>
+                    <span className="font-bold text-amber-400 text-xs">CEO OF SUMMARYKEY</span>
                   </div>
                   <div className="bg-black/30 p-3 rounded-xl border border-white/10">
                     <span className="text-slate-400 block font-normal">School</span>

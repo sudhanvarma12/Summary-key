@@ -200,7 +200,7 @@ export const MCQGameModal: React.FC<MCQGameModalProps> = ({
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-display font-bold text-base sm:text-lg text-white">
-                  Passkey Chapter Mastery Quest
+                  SummaryKey Chapter Mastery Quest
                 </span>
                 <span className="bg-amber-400/20 text-amber-200 border border-amber-400/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">
                   MCQ Game
@@ -313,7 +313,7 @@ export const MCQGameModal: React.FC<MCQGameModalProps> = ({
               <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-3.5 flex items-center justify-center gap-2.5">
                 <Award className="w-5 h-5 text-blue-700" />
                 <span className="font-bold text-xs sm:text-sm text-blue-900">
-                  Badge: {subject.name.includes('Science') ? 'Kailasagiri Science Scholar 🏅' : 'Passkey Exam Champion 🏆'}
+                  Badge: {subject.name.includes('Science') ? 'Kailasagiri Science Scholar 🏅' : 'SummaryKey Exam Champion 🏆'}
                 </span>
               </div>
 

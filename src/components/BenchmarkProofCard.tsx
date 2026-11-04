@@ -31,8 +31,8 @@ export const BenchmarkProofCard: React.FC<BenchmarkProofCardProps> = ({
 
           <h2 className="font-display text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
             {language === 'te'
-              ? 'రిట్రీవల్ బెంచ్‌మార్క్: పాస్కీ వర్సెస్ టెలిగ్రామ్'
-              : 'Retrieval Benchmark: Passkey vs Telegram'}
+              ? 'రిట్రీవల్ బెంచ్‌మార్క్: సమ్మరీకీ వర్సెస్ టెలిగ్రామ్'
+              : 'Retrieval Benchmark: SummaryKey vs Telegram'}
           </h2>
 
           <p className="text-xs sm:text-sm text-slate-500 font-normal">
@@ -45,10 +45,10 @@ export const BenchmarkProofCard: React.FC<BenchmarkProofCardProps> = ({
         {/* Right Side: Benchmark Comparison Boxes */}
         <div className="flex items-center gap-4 shrink-0">
           
-          {/* Passkey 1-Tap */}
+          {/* SummaryKey 1-Tap */}
           <div className="bg-[#eff5ff] border border-blue-200/80 rounded-xl p-3.5 sm:p-4 text-center min-w-[140px] shadow-sm">
             <span className="text-xs font-semibold text-blue-700 block">
-              Passkey 1-Tap
+              SummaryKey 1-Tap
             </span>
             <span className="font-display text-2xl sm:text-3xl font-extrabold text-blue-700 tracking-tight block my-1">
               1.8s

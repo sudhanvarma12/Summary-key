@@ -55,8 +55,8 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-display font-bold text-xl text-slate-900 tracking-tight">
-                  Passkey
+                <span className="font-display font-bold text-xl text-slate-900 dark:text-white tracking-tight">
+                  SummaryKey
                 </span>
                 <span className="bg-blue-100 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded-full tracking-wider uppercase">
                   VIZAG BETA
@@ -155,7 +155,7 @@ export const Header: React.FC<HeaderProps> = ({
                 ? 'text-blue-700 bg-blue-50 font-semibold'
                 : 'hover:text-slate-900 hover:bg-slate-50'
             }`}
-            title="Open Passkey Info (Slide 2)"
+            title="Open SummaryKey Info (Slide 2)"
           >
             <Info className="w-4 h-4 text-blue-600" />
             <span>{language === 'te' ? 'సమాచారం (స్లైడ్ 2)' : 'Info'}</span>
@@ -169,7 +169,7 @@ export const Header: React.FC<HeaderProps> = ({
                   ? 'text-amber-800 bg-amber-50 font-bold'
                   : 'hover:text-slate-900 hover:bg-slate-50'
               }`}
-              title="Slide 3: Developer (Passkey, SUDHAN VARMA CH, CodeForgers, 30-10-2026)"
+              title="Slide 3: Developer (SummaryKey, SUDHAN VARMA CH, CodeForgers, 30-10-2026)"
             >
               <Code2 className="w-4 h-4 text-amber-600" />
               <span>{language === 'te' ? 'డెవలపర్' : 'Developer'}</span>

@@ -450,8 +450,8 @@ export const CBSE_SCHOOL_EXTRA_SUBJECTS: Subject[] = [
           'AI Ethics: Data privacy, AI Bias (algorithmic bias), and Inclusivity'
         ],
         readingTime: '22 mins',
-        verifiedBy: 'S. Sudhan Varma (Passkey AI Lead)',
-        verifiedRole: 'Visakha Valley Alumnus & Passkey Architect',
+        verifiedBy: 'S. Sudhan Varma (SummaryKey AI Lead)',
+        verifiedRole: 'Visakha Valley Alumnus & SummaryKey Architect',
         pdfPages: 18,
         fileSize: '2.4 MB',
         rating: 4.99,

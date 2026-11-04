@@ -32,7 +32,7 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState<UserAccount | null>(getStoredUser());
   const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
-    return localStorage.getItem('passkey_dark_mode') === 'true';
+    return localStorage.getItem('summarykey_dark_mode') === 'true' || localStorage.getItem('passkey_dark_mode') === 'true';
   });
 
   useEffect(() => {
@@ -46,6 +46,7 @@ export default function App() {
   const toggleDarkMode = () => {
     setIsDarkMode(prev => {
       const next = !prev;
+      localStorage.setItem('summarykey_dark_mode', String(next));
       localStorage.setItem('passkey_dark_mode', String(next));
       return next;
     });
@@ -133,7 +134,7 @@ export default function App() {
   return (
     <div className={`min-h-screen ${isDarkMode ? 'dark bg-slate-950 text-slate-100' : 'bg-[#f8f9ff] text-[#0d1c2e]'} flex flex-col font-sans selection:bg-blue-100 selection:text-blue-900 transition-colors duration-200`}>
       
-      {/* 1. Header with Passkey branding, PYQ Vault, Dark Mode and Developer link */}
+      {/* 1. Header with SummaryKey branding, PYQ Vault, Dark Mode and Developer link */}
       <Header
         onGoHome={() => setActiveSlide(1)}
         onGoDeveloper={() => setActiveSlide(3)}
@@ -259,7 +260,7 @@ export default function App() {
                 <span>
                   {language === 'te' 
                     ? 'ప్రస్తుతం స్లైడ్ 1 లో ఉన్నారు. బెంచ్‌మార్క్‌లు, సిలబస్ స్కేల్ కోసం ఇన్ఫో లేదా డెవలపర్ వివరాల కోసం డెవలపర్ బటన్ నొక్కండి.' 
-                    : 'Currently on Slide 1. Press Info for benchmarks & scale, or Developer for Passkey author & group credits.'}
+                    : 'Currently on Slide 1. Press Info for benchmarks & scale, or Developer for SummaryKey author & group credits.'}
                 </span>
               </div>
 

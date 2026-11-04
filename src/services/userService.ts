@@ -1,6 +1,7 @@
 import { UserAccount, UserFeatures, CustomFeatureItem } from '../types';
 
-const STORAGE_KEY = 'passkey_user_account_v1';
+const STORAGE_KEY = 'summarykey_user_account_v1';
+const LEGACY_STORAGE_KEY = 'passkey_user_account_v1';
 
 export const DEFAULT_USER_FEATURES: UserFeatures = {
   aiVoiceTutor: true,
@@ -51,7 +52,7 @@ const notifyListeners = (user: UserAccount | null) => {
 
 export const getStoredUser = (): UserAccount | null => {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem(LEGACY_STORAGE_KEY);
     if (!raw) return null;
     return JSON.parse(raw);
   } catch (e) {
