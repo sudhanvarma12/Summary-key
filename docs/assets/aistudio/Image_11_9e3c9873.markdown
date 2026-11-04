@@ -1,0 +1,202 @@
+---
+name: Syllabu Coastal EdTech
+colors:
+  surface: '#f8f9ff'
+  surface-dim: '#ccdbf3'
+  surface-bright: '#f8f9ff'
+  surface-container-lowest: '#ffffff'
+  surface-container-low: '#eff4ff'
+  surface-container: '#e6eeff'
+  surface-container-high: '#dce9ff'
+  surface-container-highest: '#d5e3fc'
+  on-surface: '#0d1c2e'
+  on-surface-variant: '#434655'
+  inverse-surface: '#233144'
+  inverse-on-surface: '#eaf1ff'
+  outline: '#737686'
+  outline-variant: '#c3c6d7'
+  surface-tint: '#0053db'
+  primary: '#004ac6'
+  on-primary: '#ffffff'
+  primary-container: '#2563eb'
+  on-primary-container: '#eeefff'
+  inverse-primary: '#b4c5ff'
+  secondary: '#006c49'
+  on-secondary: '#ffffff'
+  secondary-container: '#6cf8bb'
+  on-secondary-container: '#00714d'
+  tertiary: '#784b00'
+  on-tertiary: '#ffffff'
+  tertiary-container: '#996100'
+  on-tertiary-container: '#ffeedd'
+  error: '#ba1a1a'
+  on-error: '#ffffff'
+  error-container: '#ffdad6'
+  on-error-container: '#93000a'
+  primary-fixed: '#dbe1ff'
+  primary-fixed-dim: '#b4c5ff'
+  on-primary-fixed: '#00174b'
+  on-primary-fixed-variant: '#003ea8'
+  secondary-fixed: '#6ffbbe'
+  secondary-fixed-dim: '#4edea3'
+  on-secondary-fixed: '#002113'
+  on-secondary-fixed-variant: '#005236'
+  tertiary-fixed: '#ffddb8'
+  tertiary-fixed-dim: '#ffb95f'
+  on-tertiary-fixed: '#2a1700'
+  on-tertiary-fixed-variant: '#653e00'
+  background: '#f8f9ff'
+  on-background: '#0d1c2e'
+  surface-variant: '#d5e3fc'
+typography:
+  display-lg:
+    fontFamily: Plus Jakarta Sans
+    fontSize: 40px
+    fontWeight: '700'
+    lineHeight: 48px
+    letterSpacing: -0.02em
+  headline-lg:
+    fontFamily: Plus Jakarta Sans
+    fontSize: 32px
+    fontWeight: '700'
+    lineHeight: 40px
+    letterSpacing: -0.015em
+  headline-lg-mobile:
+    fontFamily: Plus Jakarta Sans
+    fontSize: 26px
+    fontWeight: '700'
+    lineHeight: 34px
+    letterSpacing: -0.01em
+  headline-md:
+    fontFamily: Plus Jakarta Sans
+    fontSize: 24px
+    fontWeight: '600'
+    lineHeight: 32px
+    letterSpacing: -0.01em
+  headline-sm:
+    fontFamily: Plus Jakarta Sans
+    fontSize: 20px
+    fontWeight: '600'
+    lineHeight: 28px
+  title-md:
+    fontFamily: Inter
+    fontSize: 16px
+    fontWeight: '600'
+    lineHeight: 24px
+  body-lg:
+    fontFamily: Inter
+    fontSize: 16px
+    fontWeight: '400'
+    lineHeight: 26px
+  body-md:
+    fontFamily: Inter
+    fontSize: 14px
+    fontWeight: '400'
+    lineHeight: 22px
+  body-sm:
+    fontFamily: Inter
+    fontSize: 12px
+    fontWeight: '400'
+    lineHeight: 18px
+  label-md:
+    fontFamily: Inter
+    fontSize: 13px
+    fontWeight: '500'
+    lineHeight: 18px
+  label-sm:
+    fontFamily: Inter
+    fontSize: 11px
+    fontWeight: '600'
+    lineHeight: 16px
+    letterSpacing: 0.04em
+rounded:
+  sm: 0.25rem
+  DEFAULT: 0.5rem
+  md: 0.75rem
+  lg: 1rem
+  xl: 1.5rem
+  full: 9999px
+spacing:
+  gutter: 1.5rem
+  gutter-mobile: 1rem
+  margin: 2rem
+  margin-mobile: 1rem
+  space-xs: 0.25rem
+  space-sm: 0.5rem
+  space-md: 1rem
+  space-lg: 1.5rem
+  space-xl: 2.5rem
+---
+
+## Brand & Style
+
+The brand personality is energetic, structured, and focused. Targeted at ambitious engineering and university students in Visakhapatnam, Andhra Pradesh, the design language communicates clarity, academic momentum, and dependable utility during high-stress exam cycles and project sprints.
+
+The visual style blends modern corporate clarity with purposeful coastal vibrancy. The experience avoids chaotic gamification in favor of an organized, high-contrast, document-centric interface. Dense academic schedules, syllabus trackers, and notes are rendered with crisp surface separations, deliberate typographic scale, and tactical chromatic cues that reduce cognitive fatigue.
+
+## Colors
+
+- **Primary (`#2563EB`)**: Electric Blue powers key calls-to-action, navigation anchors, active state highlights, and primary interactive boundaries.
+- **Secondary (`#10B981`)**: Emerald Green serves strictly as a validation anchor, indicating verified lecture notes, completed syllabus milestones, and institutional credentials.
+- **Tertiary (`#F59E0B`)**: Warm Amber highlights time-sensitive alerts, exam countdowns, backlog reminders, and pending submissions.
+- **Neutral (`#475569`)**: Deep Slate Gray dictates high-contrast body text, while muted slate (`#64748B`) governs secondary metadata and field placeholders.
+- **Surfaces & Canvas**: Pure white (`#FFFFFF`) serves as the base layer for cards and modals, elevated against a soft, anti-glare canvas tint (`#F8FAFC`). Border definition relies on balanced slate dividers (`#E2E8F0`).
+
+## Typography
+
+The pairing combines the contemporary geometry of Plus Jakarta Sans for structural titles and section headers with the utilitarian legibility of Inter for body text, study materials, and data-dense interfaces.
+
+Numbers, course codes, and tabular data render with tabular figures (`tnum`) enabled in Inter. Large headlines step down on mobile breakpoints to preserve vertical density on compact displays.
+
+## Layout & Spacing
+
+A structured 12-column responsive fluid grid governs desktop viewports (max-width: 1280px), transitioning to an 8-column layout on tablets (768px - 1023px), and a 4-column flow on mobile screens (<768px). 
+
+Layout intervals follow a strict 8pt base grid with a 4pt sub-grid for micro-alignment. Complex screens like syllabus roadmaps and timetable modules leverage fixed left rails with fluid main canvases to maximize vertical reading flow without horizontal pagination.
+
+## Elevation & Depth
+
+Visual hierarchy relies on structural, low-contrast boundaries combined with crisp ambient shadows:
+
+- **Level 0 (Flat)**: Background canvas (`#F8FAFC`) with no elevation.
+- **Level 1 (Cards & Modules)**: Solid white fill (`#FFFFFF`), a 1px border of `#E2E8F0`, and an ultra-diffused shadow (`0 1px 3px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.02)`).
+- **Level 2 (Hover & Active States)**: Transition state for interactive course cards (`0 4px 6px -1px rgba(37, 99, 235, 0.06), 0 2px 4px -2px rgba(15, 23, 42, 0.05)`).
+- **Level 3 (Flyouts, Menus & Dropdowns)**: White surface with clear bounding border and expanded depth (`0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.03)`).
+- **Level 4 (Modals & Overlays)**: Distinct focus layers elevated with deep structural shadows (`0 20px 25px -5px rgba(15, 23, 42, 0.12), 0 8px 10px -6px rgba(15, 23, 42, 0.04)`), paired with a 40% opacity slate scrim (`#0F172A66`).
+
+## Shapes
+
+Corner radii balance technical precision with approachable ergonomics:
+- **Base (0.5rem / 8px)**: Inputs, buttons, segmented controls, small chips, and table wrappers.
+- **Large (1rem / 16px)**: Course cards, syllabus chapter modules, and dashboard widgets.
+- **Extra Large (1.5rem / 24px)**: Feature modals, study-deck containers, and persistent bottom sheets on mobile.
+- **Pill (9999px)**: Status badges, verified tags, and floating action markers.
+
+## Components
+
+### Buttons
+- **Primary**: Solid Electric Blue (`#2563EB`) background, white text (`#FFFFFF`), font weight 600. Focus ring uses a 2px offset with 2px solid `#93C5FD`. Active state scales subtly down (`scale(0.98)`).
+- **Secondary**: Crisp white surface with a 1px solid border (`#CBD5E1`), text set in deep slate (`#334155`).
+- **Tertiary/Ghost**: Transparent surface with text in `#2563EB`, background shifts to `#EFF6FF` on hover.
+
+### Chips & Badges
+- **Verified Badge**: Emerald Green background (`#ECFDF5`), emerald text (`#047857`), paired with a solid 12px checkmark icon. Rounded to pill form.
+- **Urgent / Exam Indicator**: Amber background (`#FFFBEB`), amber text (`#B45309`), bordered by `#FDE68A`.
+- **Subject Chips**: Slate tint (`#F1F5F9`), text in `#475569`, 8px corner radius.
+
+### Input Fields
+- White background (`#FFFFFF`), 1px solid border in `#CBD5E1`, internal padding of `0.625rem 0.875rem`.
+- Text typed in `#0F172A`, placeholder in `#94A3B8`.
+- Focus state updates border color to `#2563EB` with a soft blue outer glow (`box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15)`).
+
+### Cards
+- **Syllabus / Unit Card**: Top header section with subtle bottom divider, module title in Plus Jakarta Sans 600, percentage completion progress bar using Electric Blue over `#E2E8F0`.
+- **Study Resource Card**: Shows document title, file format icon, author credibility tag, and download action aligned to the bottom right.
+
+### Checkboxes & Radios
+- Checkboxes use an 8px border radius with a 1.5px border (`#94A3B8`). Checked state fills with `#2563EB` displaying a white geometric tick.
+- Radios use standard circular forms with concentric electric blue fills upon selection.
+
+### Academic Progress Indicators
+- Linear progress bars with a 6px height and rounded caps.
+- Dynamic fill switches from Electric Blue during active progress to Emerald Green upon 100% completion.

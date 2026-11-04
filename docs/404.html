@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SummaryKey - Redirecting...</title>
+    <script>
+      // Single Page App redirect for GitHub Pages
+      const pathSegments = window.location.pathname.split('/').filter(Boolean);
+      const repoName = pathSegments.length > 0 ? pathSegments[0] : '';
+      // Redirect to base path preserving parameters
+      window.location.replace(window.location.origin + '/' + (repoName ? repoName + '/' : ''));
+    </script>
+  </head>
+  <body>
+    <p>Redirecting to <a href="./">SummaryKey</a>...</p>
+  </body>
+</html>
