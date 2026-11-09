@@ -23,13 +23,13 @@ export interface Institution {
   type: string; // e.g. "CBSE Affiliated", "Autonomous • NBA Tier-1"
   boardOrRegulations: string[]; // e.g. ["CBSE 2024-25", "ICSE"] or ["R23", "R20"]
   bannerBadge: string;
-  gradesOrBranches: string[]; // e.g. ["Class 10", "Class 12", "Class 9", "Class 11"] or ["CSE", "IT", "ECE"]
+  gradesOrBranches: string[]; // e.g. ["Class 10", "Class 9", "Class 8", "Class 12"] or ["CSE", "IT", "ECE"]
 }
 
 export type GradeOrBranchId = 
   | 'class10' 
+  | 'class9'
   | 'class12-sci' 
-  | 'class9' 
   | 'class8'
   | 'class11-sci'
   | 'cse' 
@@ -58,11 +58,22 @@ export interface ChapterMindmap {
   branches: MindmapBranch[];
 }
 
+export interface KeywordDefinition {
+  keyword: string;
+  definition: string; // Rigorous textbook definition
+  sentenceExplanation: string; // How this keyword is explained in a clear, full descriptive sentence
+  examContext?: string; // Where and how examiners test this keyword
+}
+
 export interface TopicGlance {
   topic: string;
+  inBrief?: string; // Clear 1-2 sentence core definition of what it is in brief (e.g. "Distance is the actual distance covered by a body")
+  definition?: string;
   quickTake: string;
+  detailedExplanation?: string;
   keyPoints: string[];
   formulaOrEquation?: string;
+  keywords?: KeywordDefinition[];
 }
 
 export interface Unit {
@@ -87,6 +98,7 @@ export interface Unit {
   solvedQuestions?: { question: string; marks: string; answer: string; tip?: string }[];
   topicAtAGlance?: TopicGlance[];
   mindmap?: ChapterMindmap;
+  keywordsGlossary?: KeywordDefinition[];
 }
 
 export type CollegeYear = '1st-year' | '2nd-year' | '3rd-year' | '4th-year';

@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { 
   X, Download, Printer, Volume2, CheckCircle2, Bookmark, 
   Share2, ArrowLeft, Star, ThumbsUp, Mic, FileText, Gamepad2, 
-  Trophy, Sparkles, Brain, Network, Zap, BookOpen, Clock, AlertCircle, Copy, Check
+  Trophy, Sparkles, Brain, Network, Zap, BookOpen, Clock, AlertCircle, Copy, Check,
+  KeyRound, Search
 } from 'lucide-react';
-import { Subject, Unit, TopicGlance, ChapterMindmap } from '../types';
+import { Subject, Unit, TopicGlance, ChapterMindmap, KeywordDefinition } from '../types';
 
 interface NoteReaderModalProps {
   isOpen: boolean;
@@ -28,9 +29,10 @@ export const NoteReaderModal: React.FC<NoteReaderModalProps> = ({
   language
 }) => {
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
-  const [activeTab, setActiveTab] = useState<'glance' | 'mindmap' | 'content' | 'formulas' | 'questions'>('glance');
+  const [activeTab, setActiveTab] = useState<'glance' | 'mindmap' | 'content' | 'keywords' | 'formulas' | 'questions'>('glance');
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+  const [keywordSearch, setKeywordSearch] = useState('');
 
   // Gemini AI Chapter Completion State
   const [isGeneratingWithAI, setIsGeneratingWithAI] = useState(false);
@@ -41,6 +43,7 @@ export const NoteReaderModal: React.FC<NoteReaderModalProps> = ({
     coreTopics?: { topicTitle: string; detailedExplanation: string; examWatchout: string }[];
     formulasAndLaws?: { name: string; expression: string; variables: string; examApplication: string }[];
     solvedCBSEQuestions?: { question: string; marks: string; stepByStepSolution: string; examinerTip: string }[];
+    keywordsGlossary?: KeywordDefinition[];
     teluguSummary?: string;
     isAIGenerated?: boolean;
   } | null>(null);
@@ -50,13 +53,17 @@ export const NoteReaderModal: React.FC<NoteReaderModalProps> = ({
   // Use either live AI generated data or the unit's built-in rich data
   const currentGlance: TopicGlance[] = aiData?.topicAtAGlance || unit.topicAtAGlance || unit.keyTopics.map((topic, i) => ({
     topic,
-    quickTake: `Core ${subject.semesterOrGrade} concept frequently examined in CBSE tests.`,
+    inBrief: `It is the core concept of ${topic.replace(/^\d+\.\s*/, '')} in ${unit.title}, defining its direct physical, mathematical, or real-world meaning.`,
+    definition: `${topic} is formally defined as the fundamental governing principle in ${unit.title} that specifies the relationship between state variables, inputs, and observed physical, chemical, or algorithmic outcomes.`,
+    quickTake: `Core ${subject.semesterOrGrade} concept frequently examined in university and school assessments.`,
+    detailedExplanation: `In-depth analysis of ${topic}: In this curriculum section, students examine the underlying theoretical axioms, laboratory observations, and mathematical relations of ${topic}. It establishes how energy, matter, or algorithmic models interact and formulates the exact conditions required for solving both conceptual questions and multi-step derivations in semester and board examinations.`,
     keyPoints: [
-      `Master the standard NCERT definition, governing axiom, and state symbols for ${topic}.`,
-      `Key experimental observation, diagram arrowheads, and mathematical boundary condition.`,
-      `Avoid common student trap: always write proper SI units and intermediate algebraic steps.`
+      `Master the formal standard definition, governing axiom, and state symbols for ${topic}.`,
+      `Key experimental observation, diagram arrowheads, and mathematical boundary conditions.`,
+      `Avoid common student traps: always write proper SI units (MKS) and intermediate algebraic steps.`,
+      `Examiner scoring requirement: underline key scientific or engineering terms for full method marks.`
     ],
-    formulaOrEquation: i === 0 ? 'Standard NCERT Equation / Law' : undefined
+    formulaOrEquation: i === 0 ? 'Standard Governing Invariant / Equation' : undefined
   }));
 
   const currentMindmap: ChapterMindmap = aiData?.mindmap || unit.mindmap || {
@@ -88,6 +95,19 @@ export const NoteReaderModal: React.FC<NoteReaderModalProps> = ({
       }
     ]
   };
+
+  const currentKeywords: KeywordDefinition[] = aiData?.keywordsGlossary || unit.keywordsGlossary || currentGlance.map(item => ({
+    keyword: item.topic.replace(/^\d+\.\s*/, ''),
+    definition: item.definition || `${item.topic} is formally defined as the fundamental governing property in ${unit.title} determining state behavior.`,
+    sentenceExplanation: item.inBrief || `This keyword represents the core operational concept of ${item.topic} covered in ${unit.title}.`,
+    examContext: item.quickTake || 'Must be stated with appropriate SI units, standard scientific terminology, and clear diagrams.'
+  }));
+
+  const filteredKeywords = currentKeywords.filter(k => 
+    k.keyword.toLowerCase().includes(keywordSearch.toLowerCase()) ||
+    k.sentenceExplanation.toLowerCase().includes(keywordSearch.toLowerCase()) ||
+    k.definition.toLowerCase().includes(keywordSearch.toLowerCase())
+  );
 
   const playAudioSummary = () => {
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
@@ -280,6 +300,19 @@ export const NoteReaderModal: React.FC<NoteReaderModalProps> = ({
               <span>📖 Full Notes</span>
             </button>
 
+            {/* TAB: KEYWORDS & DEFINITIONS */}
+            <button
+              onClick={() => setActiveTab('keywords')}
+              className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer flex items-center gap-1.5 ${
+                activeTab === 'keywords'
+                  ? 'bg-white text-emerald-700 shadow-sm ring-1 ring-emerald-500/20 font-bold'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <KeyRound className="w-3.5 h-3.5 text-emerald-600" />
+              <span>🔑 Keywords & Definitions ({currentKeywords.length})</span>
+            </button>
+
             {/* TAB: FORMULAS */}
             <button
               onClick={() => setActiveTab('formulas')}
@@ -369,24 +402,38 @@ export const NoteReaderModal: React.FC<NoteReaderModalProps> = ({
             </div>
 
             {/* AI Callout Banner if not yet completed with AI */}
-            {!aiData && (
-              <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-cyan-50 border border-blue-200/80 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2 text-xs font-bold text-blue-900">
+            {!aiData ? (
+              <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 border border-blue-200/90 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
+                <div className="space-y-1 max-w-xl">
+                  <div className="flex items-center gap-2 text-xs font-bold text-blue-900 uppercase tracking-wide">
                     <Sparkles className="w-4 h-4 text-indigo-600" />
-                    <span>Complete All Information in this Chapter with Gemini AI</span>
+                    <span>Mighty Gemini 3.8 Flash AI • Deep Definition & Detailed Notes</span>
                   </div>
-                  <p className="text-xs text-slate-600">
-                    Get an exhaustive breakdown of every topic at a glance, NCERT scoring tricks, and a visual concept mindmap tailored for Visakha Valley School & Vizag institutions.
+                  <p className="text-xs text-slate-700 leading-relaxed">
+                    Generate comprehensive academic definitions, exhaustive multi-paragraph explanations, real-world Visakhapatnam applications, and scoring watchouts for every single topic in {unit.title}.
                   </p>
                 </div>
                 <button
                   onClick={handleCompleteWithAI}
                   disabled={isGeneratingWithAI}
-                  className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all shrink-0 cursor-pointer"
+                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:scale-95 text-white text-xs font-bold flex items-center gap-2 shadow-md transition-all shrink-0 cursor-pointer disabled:opacity-50"
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-                  <span>{isGeneratingWithAI ? 'Generating...' : 'Complete with Gemini AI ✨'}</span>
+                  <Sparkles className="w-4 h-4 text-amber-300" />
+                  <span>{isGeneratingWithAI ? 'Mighty Gemini AI Expanding...' : 'Expand All Concepts with Gemini AI ✨'}</span>
+                </button>
+              </div>
+            ) : (
+              <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-3 flex items-center justify-between gap-2 text-xs text-emerald-900 font-medium">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>Deep definitions, detailed notes, and comprehensive explanations expanded with Gemini AI!</span>
+                </div>
+                <button
+                  onClick={handleCompleteWithAI}
+                  disabled={isGeneratingWithAI}
+                  className="underline text-emerald-800 font-bold hover:text-emerald-950 cursor-pointer text-xs"
+                >
+                  Regenerate with Gemini AI
                 </button>
               </div>
             )}
@@ -433,8 +480,41 @@ export const NoteReaderModal: React.FC<NoteReaderModalProps> = ({
                         </span>
                       </div>
 
+                      {/* In Brief (What is it?) - Separately explains the concept in brief */}
+                      <div className="bg-amber-50/90 border border-amber-300/80 p-3.5 rounded-xl space-y-1">
+                        <div className="flex items-center gap-1.5 text-xs font-black text-amber-950 uppercase tracking-wide">
+                          <span className="w-4 h-4 rounded-full bg-amber-200 text-amber-900 text-[10px] font-black flex items-center justify-center shrink-0">💡</span>
+                          <span>In Brief (What is it?):</span>
+                        </div>
+                        <p className="text-xs sm:text-sm text-amber-950 leading-relaxed font-semibold">
+                          {item.inBrief || item.quickTake || `It is the fundamental concept in ${unit.title} representing the core behavior and properties of ${item.topic}.`}
+                        </p>
+                      </div>
+
+                      {/* Formal Definition */}
+                      <div className="bg-blue-50/70 border border-blue-200/80 p-3.5 rounded-xl space-y-1">
+                        <div className="flex items-center gap-1.5 text-xs font-bold text-blue-900 uppercase tracking-wide">
+                          <Bookmark className="w-3.5 h-3.5 text-blue-700" />
+                          <span>Formal Academic Definition:</span>
+                        </div>
+                        <p className="text-xs sm:text-sm text-blue-950 leading-relaxed font-medium">
+                          {item.definition || `${item.topic} is formally defined as the fundamental governing principle in ${unit.title} specifying how state variables, inputs, and observed outcomes relate.`}
+                        </p>
+                      </div>
+
+                      {/* In-depth Detailed Explanation */}
+                      <div className="bg-white border border-slate-200 p-3.5 rounded-xl space-y-1">
+                        <div className="flex items-center gap-1.5 text-xs font-bold text-slate-900 uppercase tracking-wide">
+                          <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                          <span>Detailed Concept & Explanation:</span>
+                        </div>
+                        <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                          {item.detailedExplanation || `Comprehensive breakdown of ${item.topic}: Students examine the governing axioms, experimental setups, and mathematical relations of ${item.topic}. It explains how energy, state variables, or algorithmic models interact and formulates the exact conditions required for solving both conceptual questions and multi-step derivations in examinations.`}
+                        </p>
+                      </div>
+
                       {/* Quick Take */}
-                      <p className="text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-200/80 p-3 rounded-xl">
+                      <p className="text-xs sm:text-sm font-medium text-slate-700 bg-slate-50 border border-slate-200/80 p-3 rounded-xl">
                         💡 <span className="font-bold text-slate-900">Quick Take:</span> {item.quickTake}
                       </p>
 
@@ -684,22 +764,153 @@ export const NoteReaderModal: React.FC<NoteReaderModalProps> = ({
                       ))}
                     </div>
                   ) : (
-                    <div className="space-y-3">
-                      {unit.keyTopics.map((topic, i) => (
-                        <div key={i} className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2">
-                          <div className="flex items-center gap-2 font-semibold text-sm text-slate-900">
-                            <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-700 text-xs flex items-center justify-center font-bold">
-                              {i + 1}
+                    <div className="space-y-4">
+                      {currentGlance.map((item, i) => (
+                        <div key={i} className="bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-3 shadow-xs">
+                          <div className="flex items-center justify-between border-b border-slate-200 pb-2">
+                            <div className="flex items-center gap-2 font-bold text-base text-slate-900">
+                              <span className="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">
+                                {i + 1}
+                              </span>
+                              <span>{item.topic}</span>
+                            </div>
+                            <span className="text-[11px] font-semibold text-blue-700 bg-blue-100/70 px-2.5 py-0.5 rounded-md">
+                              Concept {i + 1}
                             </span>
-                            <span>{topic}</span>
                           </div>
-                          <p className="text-xs text-slate-600 pl-7">
-                            Exam focus: Ensure all definitions, labeled diagrams, and step-by-step mathematical conditions are thoroughly written.
-                          </p>
+
+                          {/* In Brief (What is it?) */}
+                          <div className="bg-amber-50/90 border border-amber-300/80 p-3.5 rounded-xl space-y-1">
+                            <div className="flex items-center gap-1.5 text-xs font-black text-amber-950 uppercase tracking-wide">
+                              <span className="w-4 h-4 rounded-full bg-amber-200 text-amber-900 text-[10px] font-black flex items-center justify-center shrink-0">💡</span>
+                              <span>In Brief (What is it?):</span>
+                            </div>
+                            <p className="text-xs sm:text-sm text-amber-950 leading-relaxed font-semibold">
+                              {item.inBrief || item.quickTake || `It is the fundamental concept in ${unit.title} representing the core behavior and properties of ${item.topic}.`}
+                            </p>
+                          </div>
+
+                          {/* Formal Definition */}
+                          <div className="bg-blue-50/70 border border-blue-200/80 p-3 rounded-xl space-y-1">
+                            <div className="flex items-center gap-1.5 text-xs font-bold text-blue-900 uppercase tracking-wide">
+                              <Bookmark className="w-3.5 h-3.5 text-blue-700" />
+                              <span>Formal Academic Definition:</span>
+                            </div>
+                            <p className="text-xs sm:text-sm text-blue-950 font-medium leading-relaxed">
+                              {item.definition || `${item.topic} is formally defined as the fundamental governing principle in ${unit.title} that specifies the relationship between state variables, inputs, and observed physical, chemical, or computational behavior.`}
+                            </p>
+                          </div>
+
+                          {/* In-depth Detailed Explanation */}
+                          <div className="bg-white border border-slate-200 p-3.5 rounded-xl space-y-1.5">
+                            <div className="flex items-center gap-1.5 text-xs font-bold text-slate-900 uppercase tracking-wide">
+                              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                              <span>Detailed Concept & Step-by-Step Explanation:</span>
+                            </div>
+                            <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                              {item.detailedExplanation || `Thorough conceptual analysis of ${item.topic}: The curriculum highlights foundational axioms, experimental observations, and mathematical relations. In this section, students examine how energy, state variables, or algorithmic models interact and establish the foundational conditions for answering both short conceptual questions and multi-step derivations in semester and board examinations.`}
+                            </p>
+                            {item.formulaOrEquation && (
+                              <div className="mt-2 bg-slate-900 text-cyan-300 font-mono text-xs p-2.5 rounded-lg flex items-center justify-between">
+                                <span className="text-slate-400 font-sans text-[11px]">Governing Equation:</span>
+                                <span className="font-bold">{item.formulaOrEquation}</span>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Key Examination Points */}
+                          {item.keyPoints && item.keyPoints.length > 0 && (
+                            <div className="bg-slate-50 border border-slate-200/90 rounded-xl p-3 space-y-1">
+                              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                                Key Points to Remember for Exams:
+                              </span>
+                              <ul className="space-y-1 text-xs text-slate-700">
+                                {item.keyPoints.map((pt, ptIdx) => (
+                                  <li key={ptIdx} className="flex items-start gap-1.5">
+                                    <span className="text-emerald-600 font-bold mt-0.5">✓</span>
+                                    <span>{pt}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+
+                          <div className="bg-amber-50 border border-amber-200/80 rounded-xl p-3 text-xs text-amber-900 space-y-0.5">
+                            <span className="font-bold flex items-center gap-1">
+                              ⚠️ Examiner Watchout & Scoring Key:
+                            </span>
+                            <p className="text-amber-800">
+                              Evaluators specifically award marks for proper standard definitions, clear arrowed diagrams, and rigorous SI unit tracking. Never omit intermediate derivation steps or state assumptions.
+                            </p>
+                          </div>
                         </div>
                       ))}
                     </div>
                   )}
+                </div>
+
+                {/* Section 3: Exhaustive Keywords & Terminology Explained in Sentences */}
+                <div className="space-y-4 pt-4 border-t border-slate-200">
+                  <div className="flex items-center justify-between">
+                    <h2 className="font-display text-lg font-bold text-slate-900 border-l-4 border-emerald-600 pl-3 flex items-center gap-2">
+                      <KeyRound className="w-5 h-5 text-emerald-600" />
+                      <span>03. Chapter Keywords Glossary (Explained in Sentences & Formal Definitions)</span>
+                    </h2>
+                    <span className="text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-1 rounded-full">
+                      {currentKeywords.length} Keywords
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-600">
+                    Not a single keyword missed: Every key scientific and academic term is defined and explained in a clear, full descriptive sentence.
+                  </p>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                    {currentKeywords.map((kw, kwIdx) => (
+                      <div 
+                        key={kwIdx}
+                        className="bg-emerald-50/40 hover:bg-emerald-50/80 border border-emerald-200/80 rounded-xl p-4 space-y-2.5 transition-colors shadow-2xs"
+                      >
+                        <div className="flex items-center justify-between border-b border-emerald-200/60 pb-1.5">
+                          <span className="font-display font-bold text-sm text-emerald-950 flex items-center gap-1.5">
+                            <span className="w-5 h-5 rounded-full bg-emerald-600 text-white text-[11px] font-bold flex items-center justify-center shrink-0">
+                              {kwIdx + 1}
+                            </span>
+                            <span>{kw.keyword}</span>
+                          </span>
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100/80 px-2 py-0.5 rounded">
+                            Term {kwIdx + 1}
+                          </span>
+                        </div>
+
+                        {/* Explained in a full sentence */}
+                        <div className="bg-white border border-emerald-200/90 rounded-lg p-2.5 space-y-0.5">
+                          <div className="text-[11px] font-bold text-amber-900 flex items-center gap-1">
+                            <span>💡 Explained in a Sentence:</span>
+                          </div>
+                          <p className="text-xs text-slate-800 font-medium leading-relaxed">
+                            {kw.sentenceExplanation}
+                          </p>
+                        </div>
+
+                        {/* Formal textbook definition */}
+                        <div className="bg-emerald-100/40 border border-emerald-200/70 rounded-lg p-2.5 space-y-0.5">
+                          <div className="text-[11px] font-bold text-emerald-950 flex items-center gap-1">
+                            <span>📖 Formal Textbook Definition:</span>
+                          </div>
+                          <p className="text-xs text-emerald-950 leading-relaxed font-semibold">
+                            {kw.definition}
+                          </p>
+                        </div>
+
+                        {kw.examContext && (
+                          <div className="text-[11px] text-emerald-900/90 flex items-start gap-1">
+                            <span className="font-bold text-amber-600 shrink-0">🎯 Exam Context:</span>
+                            <span>{kw.examContext}</span>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
 
                 {/* Telugu Takeaways */}
@@ -742,6 +953,104 @@ export const NoteReaderModal: React.FC<NoteReaderModalProps> = ({
                     </button>
                   </div>
                 </div>
+
+              </div>
+            )}
+
+            {/* ========================================================= */}
+            {/* TAB: KEYWORDS GLOSSARY (DEDICATED FULL TAB) */}
+            {/* ========================================================= */}
+            {activeTab === 'keywords' && (
+              <div className="space-y-6">
+                
+                {/* Header Banner */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-4">
+                  <div>
+                    <h2 className="font-display text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-2">
+                      <KeyRound className="w-5 h-5 text-emerald-600" />
+                      <span>Chapter Keywords & Complete Vocabulary Glossary</span>
+                    </h2>
+                    <p className="text-xs text-slate-500 mt-0.5">
+                      Every critical keyword in {unit.title} explained in full descriptive sentences with formal academic definitions.
+                    </p>
+                  </div>
+
+                  {/* Search Bar */}
+                  <div className="relative w-full sm:w-64">
+                    <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                    <input
+                      type="text"
+                      value={keywordSearch}
+                      onChange={(e) => setKeywordSearch(e.target.value)}
+                      placeholder="Search any keyword..."
+                      className="w-full pl-9 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+                    />
+                  </div>
+                </div>
+
+                {/* Keywords Cards Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {filteredKeywords.map((kw, idx) => (
+                    <div 
+                      key={idx}
+                      className="bg-white hover:bg-emerald-50/20 border border-slate-200 hover:border-emerald-300 rounded-2xl p-5 space-y-3.5 shadow-xs hover:shadow-md transition-all"
+                    >
+                      <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
+                        <div className="flex items-center gap-2.5">
+                          <span className="w-7 h-7 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white text-xs font-bold flex items-center justify-center shadow-xs">
+                            {idx + 1}
+                          </span>
+                          <h3 className="font-display font-bold text-base text-slate-900">
+                            {kw.keyword}
+                          </h3>
+                        </div>
+                        <span className="text-[11px] font-bold text-emerald-700 bg-emerald-100/70 px-2.5 py-0.5 rounded-md">
+                          Vocabulary #{idx + 1}
+                        </span>
+                      </div>
+
+                      {/* 1. Explained in Sentence */}
+                      <div className="bg-amber-50/90 border border-amber-300/80 p-3.5 rounded-xl space-y-1 shadow-2xs">
+                        <div className="flex items-center gap-1.5 text-xs font-black text-amber-950 uppercase tracking-wide">
+                          <span className="text-amber-600 font-bold text-sm">💡</span>
+                          <span>Explained in a Sentence (Plain English):</span>
+                        </div>
+                        <p className="text-xs sm:text-sm text-amber-950 font-semibold leading-relaxed">
+                          {kw.sentenceExplanation}
+                        </p>
+                      </div>
+
+                      {/* 2. Formal Academic Definition */}
+                      <div className="bg-emerald-50/70 border border-emerald-200/80 p-3.5 rounded-xl space-y-1">
+                        <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-900 uppercase tracking-wide">
+                          <Bookmark className="w-3.5 h-3.5 text-emerald-700" />
+                          <span>Formal Academic Definition:</span>
+                        </div>
+                        <p className="text-xs sm:text-sm text-emerald-950 font-medium leading-relaxed">
+                          {kw.definition}
+                        </p>
+                      </div>
+
+                      {/* 3. Exam Context */}
+                      {kw.examContext && (
+                        <div className="bg-slate-50 border border-slate-200/80 p-3 rounded-xl text-xs text-slate-700 space-y-0.5">
+                          <span className="font-bold text-slate-900 flex items-center gap-1">
+                            🎯 Examiner Scoring Context:
+                          </span>
+                          <p className="text-slate-600">
+                            {kw.examContext}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                {filteredKeywords.length === 0 && (
+                  <div className="text-center py-12 text-slate-500 text-xs">
+                    No keywords found matching "{keywordSearch}". Try searching another term!
+                  </div>
+                )}
 
               </div>
             )}

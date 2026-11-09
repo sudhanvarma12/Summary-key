@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import developerPhoto from '../assets/sudhan_varma.jpg';
 import { 
   Home, Info, ArrowLeft, ArrowRight, Shield, Award, 
   CheckCircle, Star, School, Terminal, Gamepad2, Mic, 
@@ -339,10 +340,15 @@ export const InfoSlideView: React.FC<InfoSlideViewProps> = ({
                   
                   <div className="flex items-center gap-4">
                     {/* Badge / Avatar */}
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-amber-400 via-orange-500 to-blue-600 p-0.5 shadow-lg shadow-orange-500/20 shrink-0">
-                      <div className="w-full h-full bg-slate-950 rounded-2xl flex items-center justify-center text-amber-400 font-extrabold text-2xl tracking-wider font-display">
-                        SV
-                      </div>
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-amber-400 via-orange-500 to-blue-600 p-0.5 shadow-lg shadow-orange-500/20 shrink-0 overflow-hidden relative">
+                      <img
+                        src={developerPhoto}
+                        alt="SUDHAN VARMA CH - CEO"
+                        className="w-full h-full object-cover object-center rounded-2xl"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = './sudhan_varma.jpg';
+                        }}
+                      />
                     </div>
 
                     <div>
@@ -365,19 +371,16 @@ export const InfoSlideView: React.FC<InfoSlideViewProps> = ({
                     </div>
                   </div>
 
-                  {/* Contact Email Button with CEO OF SUMMARYKEY badge */}
+                  {/* Verified Role Pill */}
                   <div className="flex flex-col sm:items-end gap-1.5 shrink-0">
                     <span className="text-[11px] font-black text-amber-300 uppercase tracking-wider flex items-center gap-1">
                       <Crown className="w-3 h-3 fill-amber-300" />
                       CEO OF SUMMARYKEY
                     </span>
-                    <a 
-                      href="mailto:sudhanvarma12@gmail.com"
-                      className="inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 text-white px-4 py-2.5 rounded-xl text-xs font-semibold transition-colors border border-white/20"
-                    >
-                      <Mail className="w-4 h-4 text-amber-300" />
-                      <span>sudhanvarma12@gmail.com</span>
-                    </a>
+                    <div className="inline-flex items-center gap-2 bg-white/15 text-white px-4 py-2 rounded-xl text-xs font-semibold border border-white/20">
+                      <Shield className="w-4 h-4 text-amber-300" />
+                      <span>CodeForgers Systems</span>
+                    </div>
                   </div>
                 </div>
 

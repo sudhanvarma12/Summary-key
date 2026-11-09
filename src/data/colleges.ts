@@ -1,9 +1,5 @@
 import { Institution, GradeOrBranch, Subject, InstitutionId } from '../types';
-import { CBSE_12_SUBJECTS, CBSE_11_SUBJECTS } from './cbseSeniorData';
-import { CBSE_10_SUBJECTS } from './cbse10Data';
-import { CBSE_9_SUBJECTS } from './cbse9Data';
-import { CBSE_8_SUBJECTS } from './cbse8Data';
-import { CBSE_SCHOOL_EXTRA_SUBJECTS, ALL_SCHOOL_EXTRA_SUBJECTS } from './cbseSchoolExtraData';
+import { CBSE_REVISION_SUBJECTS } from './cbseNotesIndex';
 import { ALL_COLLEGE_YEARS_SUBJECTS } from './collegeYearsData';
 
 export const INSTITUTIONS: Institution[] = [
@@ -124,8 +120,6 @@ export const INSTITUTIONS: Institution[] = [
 
 export const GRADES_AND_BRANCHES: GradeOrBranch[] = [
   // School Grades (CBSE Rationalized Syllabus)
-  { id: 'class12-sci', name: 'Class 12 (CBSE Board Exam)', code: 'Class 12', category: 'school' },
-  { id: 'class11-sci', name: 'Class 11 (CBSE Rationalized)', code: 'Class 11', category: 'school' },
   { id: 'class10', name: 'Class 10 (CBSE Board Exam)', code: 'Class 10', category: 'school' },
   { id: 'class9', name: 'Class 9 (CBSE Rationalized)', code: 'Class 9', category: 'school' },
   { id: 'class8', name: 'Class 8 (CBSE Rationalized)', code: 'Class 8', category: 'school' },
@@ -180,6 +174,8 @@ const COLLEGE_SUBJECTS: Subject[] = [
         topicAtAGlance: [
           {
             topic: 'Pointers & Dynamic Memory in Linked Lists',
+            definition: 'A linked list is a linear collection of data elements called nodes, where linear order is determined not by physical address in memory but by self-referential pointers stored inside each node dynamically allocated on the system heap.',
+            detailedExplanation: 'Unlike contiguous static arrays, linked lists allow for instantaneous O(1) insertions and deletions at the head without memory shifting. Each node encapsulates a data payload and one or two reference pointers (next and prev in doubly linked lists). Dynamic memory allocation via malloc/calloc in C or the new operator in C++/Java manages node lifetimes. Traversal requires sequential pointer following from the head pointer, resulting in O(n) search time and lack of random access.',
             quickTake: 'Nodes allocated on heap with data and next pointer; eliminates static array size limitations.',
             keyPoints: [
               'Singly linked list: node contains data and *next pointer.',
@@ -190,6 +186,8 @@ const COLLEGE_SUBJECTS: Subject[] = [
           },
           {
             topic: 'Asymptotic Analysis & Growth of Functions',
+            definition: 'Asymptotic analysis is the mathematical evaluation of algorithm runtime and space consumption as input size n approaches infinity, establishing mathematical upper (O), lower (Ω), and tight bounds (Θ) independent of hardware or compiler variations.',
+            detailedExplanation: 'Big-O notation establishes a formal worst-case ceiling: f(n) = O(g(n)) if there exist positive constants c and n0 such that 0 <= f(n) <= c*g(n) for all n >= n0. Big-Omega (Ω) guarantees the theoretical best-case floor, while Big-Theta (Θ) defines the exact asymptotic envelope where upper and lower growth rates coincide. This analysis allows software engineers to predict scalability, memory churn, and time limits prior to system deployment.',
             quickTake: 'Big-O describes upper bound, Omega describes lower bound, Theta describes tight bound.',
             keyPoints: [
               'Big-O (Worst-case): f(n) <= c * g(n) for all n >= n0.',
@@ -200,6 +198,8 @@ const COLLEGE_SUBJECTS: Subject[] = [
           },
           {
             topic: 'Polynomial Representation via Linked Lists',
+            definition: 'Polynomial representation using linked lists is a dynamic data modeling technique where each non-zero polynomial term an*x^n is stored as an individual node consisting of a coefficient field, an exponent field, and a pointer to the subsequent decreasing term.',
+            detailedExplanation: 'Sparse polynomials (e.g., 5x^1000 + 3) waste immense space if modeled using traditional index-based arrays. Linked list representation stores only non-zero terms in descending order of exponents. Polynomial addition is achieved in O(m + n) time by simultaneously traversing two list pointers, comparing exponents, summing coefficients if exponents match, or splicing the higher degree node first.',
             quickTake: 'Each term represented as a node with coefficient, exponent, and next link pointer.',
             keyPoints: [
               'Adding polynomials compares exponents: if equal, sum coefficients; otherwise insert larger exponent first.',
@@ -595,14 +595,9 @@ const COLLEGE_SUBJECTS: Subject[] = [
   }
 ];
 
-// Base CBSE Curriculum for Schools (Class 12, Class 11, Class 10, Class 9, Class 8)
+// Base CBSE Curriculum for Schools (Simplified Revision Notes)
 const BASE_SCHOOL_SUBJECTS: Subject[] = [
-  ...CBSE_12_SUBJECTS,
-  ...CBSE_11_SUBJECTS,
-  ...CBSE_10_SUBJECTS,
-  ...ALL_SCHOOL_EXTRA_SUBJECTS,
-  ...CBSE_9_SUBJECTS,
-  ...CBSE_8_SUBJECTS,
+  ...CBSE_REVISION_SUBJECTS,
 ];
 
 // All Vizag CBSE schools share the exact same CBSE Rationalized Syllabus

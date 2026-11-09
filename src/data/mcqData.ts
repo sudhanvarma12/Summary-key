@@ -343,84 +343,89 @@ export const UNIT_MCQ_DATABASE: Record<string, MCQQuestion[]> = {
 
 // Fallback generator ensuring exactly 5 MCQs for every game round
 export const getMCQsForUnit = (subjectId: string, unitNumber: number): MCQQuestion[] => {
-  const key = `${subjectId}-${unitNumber}`;
-  const existing = UNIT_MCQ_DATABASE[key] || [];
+  const cleanId = subjectId.replace(/^(vvs|timpany|dps|ncs|sssvv)-/, '');
+  const key1 = `${subjectId}-${unitNumber}`;
+  const key2 = `${cleanId}-${unitNumber}`;
+  const key3 = `vvs-${cleanId}-${unitNumber}`;
+  const key4 = `vvs-cbse10-science-${unitNumber}`;
+
+  const existing = UNIT_MCQ_DATABASE[key1] || UNIT_MCQ_DATABASE[key2] || UNIT_MCQ_DATABASE[key3] || (cleanId.includes('science') ? UNIT_MCQ_DATABASE[key4] : undefined) || [];
 
   const genericPool: MCQQuestion[] = [
     {
       id: `gen-mcq-${subjectId}-${unitNumber}-1`,
       unitNumber,
       subjectId,
-      question: `What is the primary governing theoretical principle examined in Unit ${unitNumber}?`,
+      question: `What is the most crucial revision rule for scoring full marks in Unit ${unitNumber}?`,
       options: [
-        { id: 'a', text: 'Mathematical model formulation & boundary state invariant verification', isCorrect: true, explanation: 'Exam papers require precise condition setup before applying formulas.' },
-        { id: 'b', text: 'Arbitrary heuristic trial without proof', isCorrect: false, explanation: 'Engineering and CBSE boards require deductive mathematical proof.' },
-        { id: 'c', text: 'Unverified numerical speculation', isCorrect: false, explanation: 'Violates scientific method.' },
-        { id: 'd', text: 'Ignoring dimensional consistency', isCorrect: false, explanation: 'Dimensional checks are mandatory.' }
+        { id: 'a', text: 'Write clear definitions, mention standard SI units, and box key formulas', isCorrect: true, explanation: 'Examiners award full step marks for highlighted units and clear formulas.' },
+        { id: 'b', text: 'Skip units and write only final numerical values', isCorrect: false, explanation: 'Missing units lose 0.5 to 1 mark in board exams.' },
+        { id: 'c', text: 'Write long paragraphs without headings or points', isCorrect: false, explanation: 'Bullet points are preferred by evaluators.' },
+        { id: 'd', text: 'Avoid drawing diagrams when asked', isCorrect: false, explanation: 'Labeled diagrams are essential.' }
       ],
-      difficulty: 'Medium',
-      topicTag: 'Unit Core Concepts',
-      pdfReference: `Page 1 • Section ${unitNumber}.1 "Foundations"`
+      difficulty: 'Easy',
+      topicTag: 'Exam Revision',
+      pdfReference: `Page 1 • Unit ${unitNumber} Revision Notes`
     },
     {
       id: `gen-mcq-${subjectId}-${unitNumber}-2`,
       unitNumber,
       subjectId,
-      question: `Which factor causes the greatest mark deduction in university/board answer scripts for this unit?`,
+      question: `In CBSE board problem solving for this chapter, which step should always be written first?`,
       options: [
-        { id: 'a', text: 'Writing neat labeled diagrams with correct arrows', isCorrect: false, explanation: 'Neat diagrams yield full marks.' },
-        { id: 'b', text: 'Omitting units, boundary conditions, and sign conventions', isCorrect: true, explanation: 'Missing units (e.g. Dioptres, cm, O(log n)) typically penalizes 1-2 marks per question.' },
-        { id: 'c', text: 'Writing clear formula steps', isCorrect: false, explanation: 'Stepwise formulas earn maximum method marks.' },
-        { id: 'd', text: 'Stating assumptions clearly', isCorrect: false, explanation: 'Assumptions are rewarded.' }
+        { id: 'a', text: 'State the given values, known formula, and required unknown clearly', isCorrect: true, explanation: 'Stepwise marking awards marks for given data and the governing formula.' },
+        { id: 'b', text: 'Directly guess the answer without showing any steps', isCorrect: false, explanation: 'Zero marks are awarded for unverified answers without steps.' },
+        { id: 'c', text: 'Copy the question statement three times', isCorrect: false, explanation: 'Wastes valuable examination time.' },
+        { id: 'd', text: 'Ignore standard unit conversions (e.g. cm to m)', isCorrect: false, explanation: 'Leads to incorrect numerical answers.' }
       ],
       difficulty: 'Easy',
-      topicTag: 'Exam Technique',
-      pdfReference: `Page 3 • Section ${unitNumber}.3 "Exam Checklist"`
+      topicTag: 'Stepwise Working',
+      pdfReference: `Page 2 • Unit ${unitNumber} Problem Cheatsheet`
     },
     {
       id: `gen-mcq-${subjectId}-${unitNumber}-3`,
       unitNumber,
       subjectId,
-      question: `In numerical problem solving for this unit, what should be checked first before starting calculations?`,
+      question: `What is the best way to revise formulas and mindmaps for Unit ${unitNumber}?`,
       options: [
-        { id: 'a', text: 'Ensuring all given quantities are converted to consistent SI units', isCorrect: true, explanation: 'For example, converting cm to meters or checking big-O constraints.' },
-        { id: 'b', text: 'Skipping the question directly', isCorrect: false, explanation: 'Not a recommended exam strategy.' },
-        { id: 'c', text: 'Guessing the answer without formula', isCorrect: false, explanation: 'CBSE and autonomous boards require stepwise working.' },
-        { id: 'd', text: 'Ignoring the given values', isCorrect: false, explanation: 'Given parameters form the basis of the method.' }
+        { id: 'a', text: 'Active recall and writing formulas from memory on a blank sheet', isCorrect: true, explanation: 'Active recall significantly strengthens neural pathways for long-term retention.' },
+        { id: 'b', text: 'Passive reading once right before sleeping', isCorrect: false, explanation: 'Rapidly forgotten according to the forgetting curve.' },
+        { id: 'c', text: 'Ignoring formula derivations entirely', isCorrect: false, explanation: 'Derivations often appear in 3-mark board questions.' },
+        { id: 'd', text: 'Memorizing without understanding what variables represent', isCorrect: false, explanation: 'Causes confusion when questions vary variables.' }
       ],
-      difficulty: 'Medium',
-      topicTag: 'Problem Solving Strategy',
-      pdfReference: `Page 5 • Section ${unitNumber}.5 "Numericals Cheatsheet"`
+      difficulty: 'Easy',
+      topicTag: 'Smart Study Technique',
+      pdfReference: `Page 3 • Unit ${unitNumber} Mindmap & Formulas`
     },
     {
       id: `gen-mcq-${subjectId}-${unitNumber}-4`,
       unitNumber,
       subjectId,
-      question: `What distinguishes high-scoring answers from average answers in Unit ${unitNumber} evaluations?`,
+      question: `When answering 3-mark questions from Unit ${unitNumber}, high-scoring students always:`,
       options: [
-        { id: 'a', text: 'Writing unstructured long paragraphs without subheadings', isCorrect: false, explanation: 'Examiners skim and miss key scoring points.' },
-        { id: 'b', text: 'Crisp bulleted derivations, boxed final results with units, and clean schematics', isCorrect: true, explanation: 'Structured points and highlighted answers maximize rubric score matching.' },
-        { id: 'c', text: 'Using multiple ink colors prohibited by board rules', isCorrect: false, explanation: 'Can violate examination code.' },
-        { id: 'd', text: 'Copying the question statement repeatedly', isCorrect: false, explanation: 'Penalized by evaluators.' }
+        { id: 'a', text: 'Provide 3 distinct bullet points with keywords highlighted', isCorrect: true, explanation: 'Board evaluators check key terms against the official marking scheme.' },
+        { id: 'b', text: 'Write single word answers for descriptive questions', isCorrect: false, explanation: 'Lacks required depth for 3 marks.' },
+        { id: 'c', text: 'Leave answers unnumbered and messy', isCorrect: false, explanation: 'Hampers clarity and evaluation.' },
+        { id: 'd', text: 'Include unnecessary gossip', isCorrect: false, explanation: 'Violates examination standards.' }
       ],
       difficulty: 'Easy',
-      topicTag: 'Scoring Mastery',
-      pdfReference: `Page 7 • Section ${unitNumber}.4 "Model Answer Structure"`
+      topicTag: 'Board Answer Presentation',
+      pdfReference: `Page 4 • Unit ${unitNumber} Model Answers`
     },
     {
       id: `gen-mcq-${subjectId}-${unitNumber}-5`,
       unitNumber,
       subjectId,
-      question: `Which verified revision practice yields highest retention for the formulas in Unit ${unitNumber}?`,
+      question: `How many times should previous year board questions (PYQs) for this topic be practiced before finals?`,
       options: [
-        { id: 'a', text: 'Active recall and solving timed Previous Year Questions (PYQs) without notes', isCorrect: true, explanation: 'Active retrieval testing is empirically proven to increase long-term memory consolidation by over 60%.' },
-        { id: 'b', text: 'Passive rereading the night before exam', isCorrect: false, explanation: 'Passive reading leads to rapid forgetting curve decay.' },
-        { id: 'c', text: 'Memorizing without understanding variables', isCorrect: false, explanation: 'Fails when values or signs are altered.' },
-        { id: 'd', text: 'Ignoring chapter summaries', isCorrect: false, explanation: 'Summaries anchor key relationships.' }
+        { id: 'a', text: 'At least 2 to 3 times under timed conditions', isCorrect: true, explanation: 'Over 70% of board question patterns repeat across 5-year cycles.' },
+        { id: 'b', text: 'Zero times, only textbook reading is needed', isCorrect: false, explanation: 'PYQ practice is essential for pattern familiarity.' },
+        { id: 'c', text: 'Only looking at answers without solving by hand', isCorrect: false, explanation: 'Solving by hand builds speed and accuracy.' },
+        { id: 'd', text: 'Skipping numerical questions completely', isCorrect: false, explanation: 'Numericals are high-scoring and objective.' }
       ],
       difficulty: 'Easy',
-      topicTag: 'Retention Strategy',
-      pdfReference: `Page 9 • Section ${unitNumber}.6 "Active Recall & PYQ Practice"`
+      topicTag: 'PYQ Mastery',
+      pdfReference: `Page 5 • Unit ${unitNumber} PYQ Vault`
     }
   ];
 
@@ -428,7 +433,6 @@ export const getMCQsForUnit = (subjectId: string, unitNumber: number): MCQQuesti
     return existing.slice(0, 5);
   }
 
-  // Combine existing with generic pool to ensure exactly 5 MCQs for each game
   const combined = [...existing];
   for (const genQ of genericPool) {
     if (combined.length >= 5) break;

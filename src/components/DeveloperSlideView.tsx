@@ -1,4 +1,5 @@
 import React from 'react';
+import developerPhoto from '../assets/sudhan_varma.jpg';
 import { 
   Home, Info, Code2, Calendar, Users, Globe, User, 
   Mail, Sparkles, CheckCircle2, Award, Terminal, Shield, 
@@ -178,19 +179,18 @@ export const DeveloperSlideView: React.FC<DeveloperSlideViewProps> = ({
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 pb-6 border-b border-slate-100">
           <div className="flex items-center gap-5">
             {/* Developer Photo Portrait Container */}
-            <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-tr from-amber-400 via-blue-600 to-indigo-700 p-1 shadow-xl shrink-0 group">
+            <div className="relative w-28 h-36 sm:w-32 sm:h-44 rounded-2xl bg-gradient-to-tr from-amber-400 via-blue-600 to-indigo-700 p-1 shadow-xl shrink-0 group">
               <div className="w-full h-full bg-slate-950 rounded-2xl overflow-hidden relative flex flex-col items-center justify-center border border-white/20">
                 <img
-                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
-                  alt="SUDHAN VARMA CH - CEO of SummaryKey"
-                  className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-300"
+                  src={developerPhoto}
+                  alt="SUDHAN VARMA CH - CEO & Architect of SummaryKey"
+                  className="w-full h-full object-cover object-center hover:scale-105 transition-transform duration-300"
                   onError={(e) => {
-                    // Elegant fallback if network image is blocked
-                    (e.target as HTMLElement).style.display = 'none';
+                    (e.target as HTMLImageElement).src = './sudhan_varma.jpg';
                   }}
                 />
                 {/* Fallback & Monogram Badge overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex flex-col justify-end p-1.5 pointer-events-none">
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent flex flex-col justify-end p-1.5 pointer-events-none">
                   <span className="font-display font-black text-xs text-amber-400 tracking-wider text-center drop-shadow-md">
                     SV
                   </span>
@@ -248,16 +248,13 @@ export const DeveloperSlideView: React.FC<DeveloperSlideViewProps> = ({
               </span>
             </div>
 
-            <a
-              href="mailto:sudhanvarma12@gmail.com"
-              className="px-5 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-sm active:scale-95 group w-full sm:w-auto"
-            >
-              <Mail className="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform" />
-              <span>sudhanvarma12@gmail.com</span>
+            <div className="px-5 py-2.5 rounded-xl bg-slate-900 text-white font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm w-full sm:w-auto border border-slate-800">
+              <Shield className="w-4 h-4 text-amber-400" />
+              <span>Lead Architect & Founder</span>
               <span className="text-[10px] font-black bg-amber-400 text-slate-950 px-2 py-0.5 rounded uppercase">
                 CEO
               </span>
-            </a>
+            </div>
             
             <div className="text-[11px] text-slate-500 text-center lg:text-right font-medium">
               Registered Launch: <strong className="text-slate-800 font-mono">30-10-2026</strong>
@@ -364,9 +361,9 @@ export const DeveloperSlideView: React.FC<DeveloperSlideViewProps> = ({
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 p-4 bg-slate-50/50">
-              <span className="font-semibold text-slate-500">Contact Email</span>
+              <span className="font-semibold text-slate-500">Official Role</span>
               <div className="sm:col-span-2 flex items-center gap-2 flex-wrap">
-                <span className="font-mono text-slate-800 font-bold">sudhanvarma12@gmail.com</span>
+                <span className="font-semibold text-slate-900">Lead Architect & Systems Engineer</span>
                 <span className="bg-amber-400/30 text-amber-900 text-[10px] font-black px-2 py-0.5 rounded border border-amber-400/50 uppercase">
                   CEO OF SUMMARYKEY
                 </span>

@@ -128,91 +128,96 @@ app.post('/api/gemini/complete-chapter', async (req: Request, res: Response) => 
     if (!ai) {
       // Fallback response with complete rich chapter information when key is not provided
       res.json({
-        comprehensiveOverview: `${chapterTitle} is a core foundational pillar of the ${grade} ${subjectName} curriculum at ${institutionName}. It builds critical conceptual models tested in CBSE examinations and competitive Olympiads. Every section is mapped to the latest NCERT rationalized syllabus.`,
+        comprehensiveOverview: `${chapterTitle} is a foundational pillar of the ${grade} ${subjectName} curriculum at ${institutionName}. It builds critical conceptual models tested in board examinations, university semester exams, and competitive assessments. Every section provides rigorous academic definitions, stepwise mechanisms, and real-world engineering or physical applications.`,
         topicAtAGlance: (keyTopics.length > 0 ? keyTopics : ['Fundamental Concepts', 'Scientific Laws and Mechanisms', 'Applications and Numericals']).map((topic: string, i: number) => ({
           topic: topic,
-          quickTake: `High-yield ${grade} concept tested frequently in CBSE exams.`,
+          definition: `${topic} is formally defined as the fundamental governing principle within ${chapterTitle} that specifies the relationship between underlying state variables, inputs, and observed physical or computational outcomes.`,
+          quickTake: `High-yield core concept tested frequently in ${grade} semester and board exams.`,
+          detailedExplanation: `In-depth breakdown of ${topic}: This concept establishes how systems transition between states, process energy or information, and obey mathematical boundary conditions. Students must master the initial assumptions, intermediate physical/algebraic steps, and practical applications observed in technology and daily industry.`,
           keyPoints: [
-            `Core definition and governing scientific principle of ${topic}.`,
-            `Key laboratory observation, experiment, or mathematical condition.`,
-            `Standard CBSE examination marking requirement and common pitfalls to avoid.`
+            `Formal Definition: Rigorous standard terminology and governing physical or algorithmic law for ${topic}.`,
+            `Mechanism & Derivation: Underlying physical mechanism, state diagram, or computational pipeline.`,
+            `Boundary Conditions: Standard experimental observations, SI units (MKS), and parameter constraints.`,
+            `Exam Scoring Key: Mandatory terms and intermediate steps required by evaluators to award full marks.`
           ],
-          formulaOrEquation: i === 0 ? 'Fundamental Law Invariant' : 'Standard NCERT Equation'
+          formulaOrEquation: i === 0 ? 'Fundamental Law Invariant: S = f(x, y, t)' : 'Standard Governing Equation with SI Units'
         })),
         mindmap: {
           center: chapterTitle,
           branches: [
             {
-              title: '1. Theoretical Core',
+              title: '1. Theoretical Core & Definitions',
               subtopics: keyTopics.slice(0, 2).length > 0 ? keyTopics.slice(0, 2) : ['Definitions', 'Scientific Axioms'],
-              examTip: 'Focus on exact NCERT definitions and state conditions',
+              examTip: 'State the exact textbook definition before solving problems or deriving equations.',
               color: 'blue'
             },
             {
               title: '2. Mechanisms & Processes',
               subtopics: keyTopics.slice(2, 4).length > 0 ? keyTopics.slice(2, 4) : ['Step-by-step mechanism', 'Key reactions / derivations'],
-              examTip: 'Always include direction arrows and labeled diagrams',
+              examTip: 'Always include direction arrows, labeled component diagrams, and state symbols.',
               color: 'purple'
             },
             {
               title: '3. Quantitative & Numericals',
-              subtopics: ['Formula substitutions', 'Cartesian sign convention', 'SI Unit conversions'],
-              examTip: 'Write the raw formula before substituting numbers',
+              subtopics: ['Formula substitutions', 'Cartesian sign convention', 'SI Unit conversions (MKS)'],
+              examTip: 'Write the raw formula with symbol definitions before substituting given numerical values.',
               color: 'emerald'
             },
             {
-              title: '4. High-Yield PYQs',
-              subtopics: ['5-Mark Long Answers', 'Reasoning & Assertion', 'Real-world Vizag case studies'],
-              examTip: 'Underline final calculated values with units',
+              title: '4. High-Yield Exam Hotspots',
+              subtopics: ['Long Essay Answers', 'Reasoning & Assertion', 'Real-world Vizag case studies'],
+              examTip: 'Underline final calculated values with units and box key conclusion statements.',
               color: 'amber'
             }
           ]
         },
         coreTopics: (keyTopics.length > 0 ? keyTopics : ['Fundamental Concepts', 'Scientific Laws and Mechanisms', 'Applications and Numericals']).map((topic: string) => ({
           topicTitle: topic,
-          detailedExplanation: `In this section, students examine ${topic}. The NCERT syllabus highlights key experimental observations, stepwise analytical reasoning, and practical daily life applications. Ensure you memorize all definitions, underlying mechanisms, and labeled diagrams.`,
-          examWatchout: `CBSE evaluators consistently check for proper SI units, arrowheads in diagrams, and chemical state symbols in this topic.`
+          definition: `${topic} is formally defined as the systematic operational framework governing energy, matter, or data transformation in ${chapterTitle}.`,
+          detailedExplanation: `Comprehensive conceptual breakdown of ${topic}: The curriculum emphasizes experimental verification, stepwise analytical reasoning, and practical engineering applications. In laboratory and industrial settings, this principle is utilized to design resilient systems, optimize performance metrics, and avoid failure modes. Ensure you thoroughly memorize the governing definitions, algebraic proofs, and diagnostic procedures.`,
+          examWatchout: `Evaluators penalize missing SI units, omitted boundary conditions, and improper sign conventions in numerical calculations.`,
+          realWorldApplication: `Widely implemented in automated sensors, industrial instrumentation, and modern smart systems across Visakhapatnam.`
         })),
         formulasAndLaws: [
           {
             name: `${chapterTitle} Governing Law / Principle`,
-            expression: 'Standard NCERT algebraic & dimensional formula',
-            variables: 'Physical variables with standard SI units (MKS)',
+            expression: 'Standard algebraic & dimensional equation with boundary limits',
+            variables: 'Physical/mathematical variables defined with standard SI units (MKS)',
             examApplication: 'State the base equation before substituting given values to secure full method marks.'
           },
           {
-            name: `${chapterTitle} Key Proportionality & Invariants`,
+            name: `${chapterTitle} Invariants & Equilibrium Conditions`,
             expression: 'State constant across boundary conditions',
             variables: 'Dimensional ratio verified by experimental data',
-            examApplication: 'Frequently tested in CBSE 2-mark assertion-reason and reasoning questions.'
+            examApplication: 'Frequently tested in 2-mark assertion-reason, conceptual proofs, and mid-term evaluations.'
           }
         ],
         solvedCBSEQuestions: [
           {
-            question: `Explain the fundamental concept of ${chapterTitle} and give two real-life examples observed in Visakhapatnam.`,
-            marks: '3 Marks',
-            stepByStepSolution: `Step 1: State the precise NCERT definition.\nStep 2: List the two real-world occurrences (e.g. coastal humidity/evaporation effects or mechanical advantage).\nStep 3: Conclude with experimental verification.`,
-            examinerTip: `Underline scientific keywords to help the examiner spot your answers instantly.`
+            question: `State the precise formal definition of ${chapterTitle} and explain its fundamental mechanism with two practical examples.`,
+            marks: '3 Marks / 5 Marks',
+            stepByStepSolution: `Step 1: State the exact formal scientific/engineering definition.\nStep 2: Detail the stepwise operational mechanism or algebraic derivation.\nStep 3: Provide two concrete real-world examples (e.g. industrial control in coastal Vizag or natural physical systems).\nStep 4: Conclude with key boundary conditions and SI units.`,
+            examinerTip: `Underline scientific and technical keywords to enable examiners to spot your core points immediately.`
           },
           {
-            question: `State the mathematical derivation and boundary condition associated with ${chapterTitle}.`,
+            question: `Derive the mathematical relationship and state the boundary conditions associated with ${chapterTitle}.`,
             marks: '5 Marks',
-            stepByStepSolution: `Step 1: State the initial hypothesis and draw a neat diagram.\nStep 2: Formulate the equations from basic principles.\nStep 3: Simplify and state the final expression with appropriate SI units.`,
-            examinerTip: `Draw a box around your final answer and state the unit clearly.`
+            stepByStepSolution: `Step 1: State the initial hypothesis and draw a clean, fully labeled diagram.\nStep 2: Formulate the equations from first principles.\nStep 3: Simplify and state the final expression with appropriate SI units in a highlighted box.`,
+            examinerTip: `Draw a box around your final answer and clearly define every symbol in a variable key.`
           }
         ],
-        teluguSummary: `${chapterTitle} అధ్యాయంలో ముఖ్యమైన అంశాలు, సూత్రాలు మరియు పరీక్షా వ్యూహాలు ఇక్కడ సమగ్రంగా వివరించబడ్డాయి. విశాఖ వ్యాలీ స్కూల్ టాపర్స్ నోట్స్ ప్రకారం ప్రిపేర్ అవ్వండి.`,
+        teluguSummary: `${chapterTitle} అధ్యాయంలో ముఖ్యమైన నిర్వచనాలు (Definitions), వివరణలు (Explanations), సూత్రాలు మరియు పరీక్షా వ్యూహాలు సమగ్రంగా అందించబడ్డాయి. విశాఖ విద్యార్థుల కోసం సులభమైన ద్విభాషా వివరణ.`,
         highYieldPracticeMCQs: [
           {
             question: `Which fundamental principle governs ${chapterTitle}?`,
             options: [
-              'A) Conservation and equilibrium laws of physics/chemistry',
+              'A) Established conservation and equilibrium laws of science and engineering',
               'B) Arbitrary unverified assumptions',
               'C) Random statistical fluctuations',
               'D) Non-reproducible empirical trials'
             ],
             correctOptionIndex: 0,
-            explanation: `All chapters in ${subjectName} follow rigorous physical and chemical conservation laws.`
+            explanation: `All concepts in ${subjectName} follow rigorous physical, mathematical, and algorithmic conservation laws.`
           }
         ],
         isAIGenerated: false
@@ -220,31 +225,35 @@ app.post('/api/gemini/complete-chapter', async (req: Request, res: Response) => 
       return;
     }
 
-    const prompt = `You are the master CBSE academic faculty and curriculum author for SummaryKey (premier student academic platform for schools like Visakha Valley School, DPS, Timpany, and colleges in Vizag).
+    const prompt = `You are the master academic faculty and curriculum author for SummaryKey (premier student academic platform for schools like Visakha Valley School, DPS, Timpany, and engineering colleges like GVPCOE, GITAM, ANITS, Raghu, AUCOE in Vizag).
 Target Chapter: Unit/Chapter ${unitNumber}: ${chapterTitle}
-Subject: ${subjectName} (${grade} - New CBSE NCERT Rationalized Syllabus)
+Subject: ${subjectName} (${grade} Syllabus)
 Institution Context: ${institutionName}
 Key Topics in Chapter: ${Array.isArray(keyTopics) ? keyTopics.join(', ') : 'All chapter concepts'}
 Language preference: ${language === 'te' ? 'Telugu explanations along with English terms' : 'Clear English with Telugu high-yield takeaways'}
 
-The student requested: Complete EVERY topic in a glance with high-yield points, complete all missing information with maximum depth, and provide a comprehensive structured MINDMAP at the end.
+The student requested:
+"Give a formal definition for every topic, explain it in detail, and make the notes long, thorough, and detailed for every concept with the help of the mighty Gemini AI."
 
 Please format your response strictly as valid JSON with the following exact keys:
 {
-  "comprehensiveOverview": "A thorough, intuitive 2-paragraph overview explaining what this chapter is about, why it matters, and real-life examples in Visakhapatnam and daily life.",
+  "comprehensiveOverview": "A thorough, intuitive 2-paragraph overview explaining what this chapter is about, why it matters, core principles, and real-life examples in Visakhapatnam and daily life.",
   "topicAtAGlance": [
     {
-      "topic": "Name of each key topic in the chapter",
-      "quickTake": "One-line rapid summary that sticks in memory",
-      "keyPoints": ["Crucial exam point 1", "Crucial exam point 2", "Common trap/trick"],
-      "formulaOrEquation": "Key equation, formula, or reaction if applicable"
+      "topic": "Name of each individual concept separately (e.g. Distance, Displacement, Speed, Velocity, Acceleration)",
+      "inBrief": "Crystal-clear 1-sentence explanation of what it is in brief (e.g. for Distance: 'Distance is the actual length of the path or distance covered by a body during its motion from its initial position to its final position.')",
+      "definition": "Precise, rigorous formal textbook definition of the concept (25-45 words)",
+      "quickTake": "One-line rapid intuitive summary that sticks in memory",
+      "detailedExplanation": "Exhaustive, in-depth explanation breaking down mechanisms, properties, real-life examples, and why it behaves this way (80-120 words per topic)",
+      "keyPoints": ["Crucial exam point 1", "Crucial exam point 2", "Important distinction or condition", "Common trap/trick to avoid"],
+      "formulaOrEquation": "Key equation, formula, mathematical condition, or reaction if applicable"
     }
   ],
   "mindmap": {
     "center": "${chapterTitle}",
     "branches": [
       {
-        "title": "Branch Name (e.g. 1. Foundations, 2. Core Laws, 3. Equations & Derivations, 4. Exam Hotspots)",
+        "title": "Branch Name (e.g. 1. Foundations & Definitions, 2. Core Laws & Mechanisms, 3. Equations & Derivations, 4. Exam Hotspots)",
         "subtopics": ["Subtopic A", "Subtopic B", "Subtopic C"],
         "examTip": "1-sentence golden rule for scoring marks here",
         "color": "blue | purple | emerald | amber"
@@ -254,24 +263,34 @@ Please format your response strictly as valid JSON with the following exact keys
   "coreTopics": [
     {
       "topicTitle": "Topic name",
-      "detailedExplanation": "Complete, rigorous explanation covering every definition, principle, diagram description, and experiment",
-      "examWatchout": "Key trap or common student error in exams"
+      "definition": "Formal scientific/engineering definition",
+      "detailedExplanation": "Complete, long, rigorous explanation covering every definition, principle, diagram description, experimental proof, and step-by-step mechanism (100-150 words)",
+      "examWatchout": "Key trap or common student error in exams",
+      "realWorldApplication": "Where this is applied in technology, industry, or nature"
     }
   ],
   "formulasAndLaws": [
     {
       "name": "Formula or Law Name",
-      "expression": "e.g. F = G*(m1*m2)/r^2 or v = u + at",
+      "expression": "e.g. F = G*(m1*m2)/r^2 or Big-O complexity or Ohm's Law",
       "variables": "Explanation of each symbol and SI units",
-      "examApplication": "How to use this to score full marks in numericals"
+      "examApplication": "How to use this to score full marks in numericals and derivations"
     }
   ],
   "solvedCBSEQuestions": [
     {
-      "question": "Realistic CBSE Board / School Examination question",
+      "question": "Realistic Examination question for this grade/college",
       "marks": "3 Marks / 5 Marks",
-      "stepByStepSolution": "Clean, stepwise model answer with equations and explanations as required by CBSE evaluators",
-      "examinerTip": "Pro-tip from VVS / CBSE top evaluators"
+      "stepByStepSolution": "Clean, stepwise model answer with equations and explanations as required by evaluators",
+      "examinerTip": "Pro-tip from top evaluators"
+    }
+  ],
+  "keywordsGlossary": [
+    {
+      "keyword": "Key term (e.g. Inertia, Displacement, Latent Heat, Centripetal, Osmosis, Big-O, Linked List)",
+      "definition": "Formal scientific, mathematical, or academic textbook definition of this keyword (20-35 words)",
+      "sentenceExplanation": "Crystal-clear full descriptive sentence explaining exactly what this keyword means in plain, intuitive English",
+      "examContext": "How this keyword is tested in exams, essential buzzwords, and evaluator scoring requirements"
     }
   ],
   "teluguSummary": "Detailed Telugu translation of the core concepts for bilingual understanding by Andhra/Vizag students.",
@@ -280,11 +299,15 @@ Please format your response strictly as valid JSON with the following exact keys
       "question": "Conceptual MCQ question testing deep understanding",
       "options": ["A) ...", "B) ...", "C) ...", "D) ..."],
       "correctOptionIndex": 0,
-      "explanation": "Why this option is correct based on CBSE NCERT textbook."
+      "explanation": "Why this option is correct based on textbook and syllabus."
     }
   ]
 }
-Ensure topicAtAGlance covers all main topics in the chapter, mindmap has at least 4 branches with subtopics, and coreTopics gives exhaustive notes. Return ONLY raw JSON without markdown code fences or backticks.`;
+CRITICAL REQUIREMENTS:
+1. Exhaustive & Large: NOT EVEN A SINGLE TOPIC MAY BE MISSED from this chapter. Cover all subtopics with large, thorough explanations (at least 150-200 words per topic).
+2. Keywords in Sentences: In keywordsGlossary and in each topic, extract and explain every single key word in clear sentences and give them a formal academic definition.
+3. Every individual concept (e.g., in Motion: Distance, Displacement, Speed, Velocity, Acceleration, Uniform Motion, Circular Motion, etc.) must be broken out separately with its own inBrief ('it is the distance covered by a body...'), formal definition, and detailed explanation.
+Return ONLY raw JSON without markdown code fences or backticks.`;
 
     const response = await ai.models.generateContent({
       model: 'gemini-3.8-flash',

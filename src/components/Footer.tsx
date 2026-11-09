@@ -124,7 +124,9 @@ export const Footer: React.FC<FooterProps> = ({
             </a>
             <span>•</span>
             <a 
-              href="mailto:sudhanvarma12@gmail.com?subject=SummaryKey%20Social%20Community" 
+              href="https://github.com/sudhanvarma12/Summary-key" 
+              target="_blank"
+              rel="noreferrer"
               className="hover:underline font-semibold"
             >
               Community
