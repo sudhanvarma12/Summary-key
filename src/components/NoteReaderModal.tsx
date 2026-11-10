@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   X, Download, Printer, Volume2, CheckCircle2, Bookmark, 
   Share2, ArrowLeft, Star, ThumbsUp, Mic, FileText, Gamepad2, 
   Trophy, Sparkles, Brain, Network, Zap, BookOpen, Clock, AlertCircle, Copy, Check,
-  KeyRound, Search
+  KeyRound, Search, Loader2
 } from 'lucide-react';
 import { Subject, Unit, TopicGlance, ChapterMindmap, KeywordDefinition } from '../types';
+import { getEnrichedKnowledge } from '../data/universalSyllabusKnowledge';
 
 interface NoteReaderModalProps {
   isOpen: boolean;
@@ -48,23 +49,106 @@ export const NoteReaderModal: React.FC<NoteReaderModalProps> = ({
     isAIGenerated?: boolean;
   } | null>(null);
 
+  // Trigger Gemini AI generation for completing every topic in a glance & mindmap
+  const handleCompleteWithAI = async (curSubject?: any, curUnit?: any) => {
+    const activeSubject = (curSubject && typeof curSubject === 'object' && 'id' in curSubject) ? curSubject : subject;
+    const activeUnit = (curUnit && typeof curUnit === 'object' && 'unitNumber' in curUnit) ? curUnit : unit;
+    if (!activeSubject || !activeUnit) return;
+    setIsGeneratingWithAI(true);
+    try {
+      const response = await fetch('/api/gemini/complete-chapter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          subjectName: activeSubject.name,
+          chapterTitle: activeUnit.title,
+          unitNumber: activeUnit.unitNumber,
+          institutionName: activeSubject.institutionId,
+          grade: activeSubject.semesterOrGrade,
+          keyTopics: activeUnit.keyTopics,
+          language
+        })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setAiData(data);
+        const cacheKey = `summarykey_gemini_v4_${activeSubject.id}_unit_${activeUnit.unitNumber}`;
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify(data));
+        } catch (e) {
+          console.warn('Error saving to cache', e);
+        }
+      } else {
+        console.error('Gemini complete chapter error:', await response.text());
+      }
+    } catch (err) {
+      console.error('Failed to call Gemini AI:', err);
+    } finally {
+      setIsGeneratingWithAI(false);
+    }
+  };
+
+  // Automatically load from localStorage cache or invoke mighty Gemini AI on modal open
+  useEffect(() => {
+    if (!isOpen || !subject || !unit) {
+      setAiData(null);
+      return;
+    }
+
+    // Always reset aiData so the previous chapter's data never leaks into this chapter
+    setAiData(null);
+
+    const cacheKey = `summarykey_gemini_v4_${subject.id}_unit_${unit.unitNumber}`;
+    try {
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        // Safety verification: Ensure the cached chapter matches the current chapter title
+        const isCurrentMotion = unit.title.toLowerCase().includes('motion') && !unit.title.toLowerCase().includes('force');
+        const cacheIsMotion = parsed.comprehensiveOverview?.toLowerCase().includes('motion') || parsed.topicAtAGlance?.[0]?.topic?.toLowerCase().includes('distance');
+
+        if (isCurrentMotion || !cacheIsMotion) {
+          setAiData(parsed);
+          return;
+        }
+      }
+    } catch (e) {
+      console.warn('Error reading AI cache', e);
+    }
+
+    // Trigger Mighty Gemini AI automatically for this specific chapter
+    handleCompleteWithAI(subject, unit);
+  }, [isOpen, subject?.id, unit?.unitNumber]);
+
+  // Hook calls MUST execute unconditionally before any early return (React Rules of Hooks)
   if (!isOpen || !subject || !unit) return null;
 
-  // Use either live AI generated data or the unit's built-in rich data
-  const currentGlance: TopicGlance[] = aiData?.topicAtAGlance || unit.topicAtAGlance || unit.keyTopics.map((topic, i) => ({
-    topic,
-    inBrief: `It is the core concept of ${topic.replace(/^\d+\.\s*/, '')} in ${unit.title}, defining its direct physical, mathematical, or real-world meaning.`,
-    definition: `${topic} is formally defined as the fundamental governing principle in ${unit.title} that specifies the relationship between state variables, inputs, and observed physical, chemical, or algorithmic outcomes.`,
-    quickTake: `Core ${subject.semesterOrGrade} concept frequently examined in university and school assessments.`,
-    detailedExplanation: `In-depth analysis of ${topic}: In this curriculum section, students examine the underlying theoretical axioms, laboratory observations, and mathematical relations of ${topic}. It establishes how energy, matter, or algorithmic models interact and formulates the exact conditions required for solving both conceptual questions and multi-step derivations in semester and board examinations.`,
-    keyPoints: [
-      `Master the formal standard definition, governing axiom, and state symbols for ${topic}.`,
-      `Key experimental observation, diagram arrowheads, and mathematical boundary conditions.`,
-      `Avoid common student traps: always write proper SI units (MKS) and intermediate algebraic steps.`,
-      `Examiner scoring requirement: underline key scientific or engineering terms for full method marks.`
-    ],
-    formulaOrEquation: i === 0 ? 'Standard Governing Invariant / Equation' : undefined
-  }));
+  // Retrieve enriched offline syllabus data if available
+  const enrichedData = getEnrichedKnowledge(unit.title);
+
+  // Determine if unit has full Motion-style format with inBrief
+  const unitHasMotionStyle = unit.topicAtAGlance && unit.topicAtAGlance.length > 0 && !!unit.topicAtAGlance[0].inBrief;
+  const hasEnriched = enrichedData?.topics && enrichedData.topics.length > 0;
+
+  // Use either live AI generated data, built-in Motion-style data, enriched knowledge, or fallback
+  const currentGlance: TopicGlance[] = 
+    aiData?.topicAtAGlance || 
+    (unitHasMotionStyle ? unit.topicAtAGlance : (hasEnriched ? enrichedData.topics : unit.topicAtAGlance)) || 
+    unit.keyTopics.map((topic, i) => ({
+      topic: `${i + 1}. ${topic.replace(/^\d+\.\s*/, '')}`,
+      inBrief: `It is the core concept of ${topic.replace(/^\d+\.\s*/, '')} in ${unit.title}, defining its direct physical, mathematical, or real-world meaning.`,
+      definition: `${topic} is formally defined as the fundamental governing principle in ${unit.title} that specifies the relationship between state variables, inputs, and observed physical, chemical, or algorithmic outcomes.`,
+      quickTake: `Core ${subject.semesterOrGrade} concept frequently examined in university and school assessments.`,
+      detailedExplanation: `In-depth analysis of ${topic}: In this curriculum section, students examine the underlying theoretical axioms, laboratory observations, and mathematical relations of ${topic}. It establishes how energy, matter, or algorithmic models interact and formulates the exact conditions required for solving both conceptual questions and multi-step derivations in semester and board examinations.`,
+      keyPoints: [
+        `Master the formal standard definition, governing axiom, and state symbols for ${topic}.`,
+        `Key experimental observation, diagram arrowheads, and mathematical boundary conditions.`,
+        `Avoid common student traps: always write proper SI units (MKS) and intermediate algebraic steps.`,
+        `Examiner scoring requirement: underline key scientific or engineering terms for full method marks.`
+      ],
+      formulaOrEquation: i === 0 ? 'Standard Governing Invariant / Equation' : undefined
+    }));
 
   const currentMindmap: ChapterMindmap = aiData?.mindmap || unit.mindmap || {
     center: unit.title,
@@ -96,14 +180,22 @@ export const NoteReaderModal: React.FC<NoteReaderModalProps> = ({
     ]
   };
 
-  const currentKeywords: KeywordDefinition[] = aiData?.keywordsGlossary || unit.keywordsGlossary || currentGlance.map(item => ({
+  const unitHasKeywords = unit.keywordsGlossary && unit.keywordsGlossary.length > 0;
+  const enrichedHasKeywords = enrichedData?.keywords && enrichedData.keywords.length > 0;
+
+  const currentKeywords: KeywordDefinition[] = 
+    aiData?.keywordsGlossary || 
+    (unitHasKeywords ? unit.keywordsGlossary! : (enrichedHasKeywords ? enrichedData!.keywords : []));
+
+  // If still empty, derive complete Motion-style keywords from currentGlance
+  const finalKeywords: KeywordDefinition[] = currentKeywords.length > 0 ? currentKeywords : currentGlance.map(item => ({
     keyword: item.topic.replace(/^\d+\.\s*/, ''),
     definition: item.definition || `${item.topic} is formally defined as the fundamental governing property in ${unit.title} determining state behavior.`,
     sentenceExplanation: item.inBrief || `This keyword represents the core operational concept of ${item.topic} covered in ${unit.title}.`,
     examContext: item.quickTake || 'Must be stated with appropriate SI units, standard scientific terminology, and clear diagrams.'
   }));
 
-  const filteredKeywords = currentKeywords.filter(k => 
+  const filteredKeywords = finalKeywords.filter(k => 
     k.keyword.toLowerCase().includes(keywordSearch.toLowerCase()) ||
     k.sentenceExplanation.toLowerCase().includes(keywordSearch.toLowerCase()) ||
     k.definition.toLowerCase().includes(keywordSearch.toLowerCase())
@@ -129,37 +221,6 @@ export const NoteReaderModal: React.FC<NoteReaderModalProps> = ({
     }
   };
 
-  // Trigger Gemini AI generation for completing every topic in a glance & mindmap
-  const handleCompleteWithAI = async () => {
-    setIsGeneratingWithAI(true);
-    try {
-      const response = await fetch('/api/gemini/complete-chapter', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          subjectName: subject.name,
-          chapterTitle: unit.title,
-          unitNumber: unit.unitNumber,
-          institutionName: subject.institutionId,
-          grade: subject.semesterOrGrade,
-          keyTopics: unit.keyTopics,
-          language
-        })
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setAiData(data);
-        setActiveTab('glance');
-      } else {
-        console.error('Gemini complete chapter error:', await response.text());
-      }
-    } catch (err) {
-      console.error('Failed to call Gemini AI:', err);
-    } finally {
-      setIsGeneratingWithAI(false);
-    }
-  };
 
   const handleCopySummary = () => {
     const text = `SummaryKey CBSE Study Guide\nChapter: Unit ${unit.unitNumber} - ${unit.title}\nSubject: ${subject.name} (${subject.semesterOrGrade})\n\nTopics At A Glance:\n${currentGlance.map(g => `• ${g.topic}: ${g.quickTake}\n  - ${g.keyPoints.join('\n  - ')}`).join('\n\n')}\n\nMindmap Branches:\n${currentMindmap.branches.map(b => `${b.title}:\n  ${b.subtopics.join(', ')}\n  Pro-Tip: ${b.examTip}`).join('\n\n')}`;
@@ -310,7 +371,7 @@ export const NoteReaderModal: React.FC<NoteReaderModalProps> = ({
               }`}
             >
               <KeyRound className="w-3.5 h-3.5 text-emerald-600" />
-              <span>🔑 Keywords & Definitions ({currentKeywords.length})</span>
+              <span>🔑 Keywords & Definitions ({finalKeywords.length})</span>
             </button>
 
             {/* TAB: FORMULAS */}
@@ -401,8 +462,33 @@ export const NoteReaderModal: React.FC<NoteReaderModalProps> = ({
               </div>
             </div>
 
+            {/* Active AI Generation Banner */}
+            {isGeneratingWithAI && (
+              <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white rounded-2xl p-4 sm:p-5 flex items-center justify-between gap-4 shadow-lg animate-pulse">
+                <div className="flex items-center gap-3.5">
+                  <Loader2 className="w-6 h-6 animate-spin text-amber-300 shrink-0" />
+                  <div className="space-y-0.5">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-black uppercase tracking-wider text-amber-300">
+                        ⚡ Mighty Gemini 3.8 Flash AI is Expanding Chapter
+                      </span>
+                      <span className="bg-white/20 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                        Live Deep Analysis
+                      </span>
+                    </div>
+                    <p className="text-xs text-blue-100">
+                      Generating exhaustive definitions, inBrief sentences, detailed multi-paragraph explanations, formulas, and complete keywords glossary for {unit.title}...
+                    </p>
+                  </div>
+                </div>
+                <span className="text-[11px] font-bold bg-white/10 border border-white/20 px-3 py-1 rounded-xl text-white shrink-0 hidden sm:inline">
+                  Motion-Style Breakdown
+                </span>
+              </div>
+            )}
+
             {/* AI Callout Banner if not yet completed with AI */}
-            {!aiData ? (
+            {!aiData && !isGeneratingWithAI ? (
               <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 border border-blue-200/90 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
                 <div className="space-y-1 max-w-xl">
                   <div className="flex items-center gap-2 text-xs font-bold text-blue-900 uppercase tracking-wide">
@@ -857,7 +943,7 @@ export const NoteReaderModal: React.FC<NoteReaderModalProps> = ({
                       <span>03. Chapter Keywords Glossary (Explained in Sentences & Formal Definitions)</span>
                     </h2>
                     <span className="text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-1 rounded-full">
-                      {currentKeywords.length} Keywords
+                      {finalKeywords.length} Keywords
                     </span>
                   </div>
                   <p className="text-xs text-slate-600">
@@ -865,7 +951,7 @@ export const NoteReaderModal: React.FC<NoteReaderModalProps> = ({
                   </p>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
-                    {currentKeywords.map((kw, kwIdx) => (
+                    {finalKeywords.map((kw, kwIdx) => (
                       <div 
                         key={kwIdx}
                         className="bg-emerald-50/40 hover:bg-emerald-50/80 border border-emerald-200/80 rounded-xl p-4 space-y-2.5 transition-colors shadow-2xs"
