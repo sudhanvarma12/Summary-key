@@ -1,7 +1,11 @@
 import { TopicGlance, KeywordDefinition } from '../types';
 import { CLASS_9_SCIENCE_KNOWLEDGE } from './knowledgeClass9Science';
 import { CLASS_10_SCIENCE_KNOWLEDGE } from './knowledgeClass10Science';
+import { CLASS_8_SCIENCE_KNOWLEDGE } from './knowledgeClass8Science';
+import { MATHS_SYLLABUS_KNOWLEDGE } from './knowledgeMaths';
+import { SOCIAL_AND_AI_KNOWLEDGE } from './knowledgeSocialAndAI';
 import { COLLEGE_AND_AI_KNOWLEDGE } from './knowledgeCollegeAndAI';
+import { COLLEGE_ENGINEERING_EXTRA_KNOWLEDGE } from './knowledgeCollegeEngineeringExtra';
 
 export interface ChapterKnowledge {
   titleMatcher: string;
@@ -532,9 +536,13 @@ export const UNIVERSAL_SYLLABUS_KNOWLEDGE: ChapterKnowledge[] = [
       }
     ]
   },
+  ...CLASS_8_SCIENCE_KNOWLEDGE,
   ...CLASS_9_SCIENCE_KNOWLEDGE,
   ...CLASS_10_SCIENCE_KNOWLEDGE,
-  ...COLLEGE_AND_AI_KNOWLEDGE
+  ...MATHS_SYLLABUS_KNOWLEDGE,
+  ...SOCIAL_AND_AI_KNOWLEDGE,
+  ...COLLEGE_AND_AI_KNOWLEDGE,
+  ...COLLEGE_ENGINEERING_EXTRA_KNOWLEDGE
 ];
 
 // Helper lookup function to enrich any unit automatically with robust and precise matching

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BookOpen, Compass, Layers, Sparkles, Info, Languages, FileText, Mic, Home, Code2, User, Moon, Sun } from 'lucide-react';
+import { BookOpen, Compass, Layers, Sparkles, Info, Languages, FileText, Mic, Home, Code2, User, Moon, Sun, ChevronLeft, ChevronRight } from 'lucide-react';
 import { UserAccount } from '../types';
 
 interface HeaderProps {
@@ -19,6 +19,10 @@ interface HeaderProps {
   onOpenRegistration?: () => void;
   isDarkMode?: boolean;
   onToggleDarkMode?: () => void;
+  activeSlide?: 1 | 2 | 3;
+  onChangeSlide?: (slide: 1 | 2 | 3) => void;
+  onPrevSlide?: () => void;
+  onNextSlide?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -37,8 +41,39 @@ export const Header: React.FC<HeaderProps> = ({
   user,
   onOpenRegistration,
   isDarkMode,
-  onToggleDarkMode
+  onToggleDarkMode,
+  activeSlide = 1,
+  onChangeSlide,
+  onPrevSlide,
+  onNextSlide
 }) => {
+  const scrollContainerRef = React.useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = React.useState(false);
+  const [canScrollRight, setCanScrollRight] = React.useState(false);
+
+  const checkScroll = () => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      setCanScrollLeft(scrollLeft > 2);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 2);
+    }
+  };
+
+  React.useEffect(() => {
+    checkScroll();
+    window.addEventListener('resize', checkScroll);
+    return () => window.removeEventListener('resize', checkScroll);
+  }, []);
+
+  const handleScrollLeft = () => {
+    scrollContainerRef.current?.scrollBy({ left: -120, behavior: 'smooth' });
+    setTimeout(checkScroll, 300);
+  };
+
+  const handleScrollRight = () => {
+    scrollContainerRef.current?.scrollBy({ left: 120, behavior: 'smooth' });
+    setTimeout(checkScroll, 300);
+  };
   return (
     <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
@@ -204,31 +239,179 @@ export const Header: React.FC<HeaderProps> = ({
             )
           )}
 
-          {/* Dark Mode Toggle at top of slide */}
-          {onToggleDarkMode && (
-            <button
-              onClick={onToggleDarkMode}
-              className="p-2 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex items-center justify-center shadow-sm cursor-pointer"
-              title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode (Night Study)'}
-              aria-label="Toggle Dark Mode"
-            >
-              {isDarkMode ? (
-                <Sun className="w-4 h-4 text-amber-400 fill-amber-400" />
-              ) : (
-                <Moon className="w-4 h-4 text-slate-600" />
-              )}
-            </button>
-          )}
+          {/* Divider Line separating Registration from Language & Dark Mode */}
+          <div className="h-7 w-px bg-slate-200 dark:bg-slate-700 mx-1 shrink-0" />
 
-          {/* Language Switcher */}
-          <button
-            onClick={onToggleLanguage}
-            className="px-3 py-2 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 rounded-lg text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex items-center gap-1.5 shadow-sm cursor-pointer"
-            title="Toggle English / Telugu"
+          {/* DEDICATED LANGUAGE & DARK MODE SCROLL LINE CONTAINER */}
+          <div 
+            className="flex items-center gap-1 bg-slate-100/90 dark:bg-slate-800/90 p-1 sm:p-1.5 rounded-2xl border border-slate-200/90 dark:border-slate-700 shadow-2xs"
+            title="Scroll Language & Dark Mode: The line moves both sides!"
           >
-            <Languages className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-            <span>{language === 'te' ? 'English' : 'తెలుగు'}</span>
-          </button>
+            {/* Scroll Left Button */}
+            <button
+              onClick={handleScrollLeft}
+              className={`p-1 rounded-lg text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-white dark:hover:bg-slate-700 transition-all cursor-pointer ${
+                canScrollLeft ? 'opacity-100' : 'opacity-40 hover:bg-transparent'
+              }`}
+              title="Scroll Language & Dark Mode Left ◄"
+              aria-label="Scroll Controls Left"
+            >
+              <ChevronLeft className="w-3.5 h-3.5" />
+            </button>
+
+            {/* Scrollable Rail with Horizontal Track Line */}
+            <div className="flex flex-col">
+              <div
+                ref={scrollContainerRef}
+                onScroll={checkScroll}
+                className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth py-0.5 max-w-[210px] sm:max-w-[340px]"
+              >
+                {/* 1. LANGUAGE LINE SWITCHER (Moves Both Sides: Left = English, Right = Telugu) */}
+                <div 
+                  className="flex items-center gap-1.5 bg-white dark:bg-slate-900 px-2 py-1 rounded-xl border border-slate-200/90 dark:border-slate-700/90 shadow-2xs shrink-0 select-none"
+                  title={`Language Line: Currently ${language === 'en' ? 'English (Left)' : 'Telugu (Right)'}. Click line to move sides.`}
+                >
+                  <button
+                    onClick={() => language !== 'en' && onToggleLanguage()}
+                    className={`text-[11px] font-black tracking-tight px-1.5 py-0.5 rounded-md transition-all cursor-pointer ${
+                      language === 'en' 
+                        ? 'bg-blue-600 text-white shadow-2xs' 
+                        : 'text-slate-500 hover:text-slate-900 dark:hover:text-slate-200'
+                    }`}
+                  >
+                    EN
+                  </button>
+
+                  {/* Interactive Slider Line connecting English and Telugu */}
+                  <div 
+                    onClick={onToggleLanguage}
+                    className="relative w-9 h-3.5 flex items-center cursor-pointer group"
+                    title="Click line to slide between English and Telugu"
+                  >
+                    <div className="w-full h-1 bg-slate-200 dark:bg-slate-700 rounded-full" />
+                    <div 
+                      className="absolute h-1 bg-blue-500 rounded-full transition-all duration-300"
+                      style={{
+                        left: language === 'en' ? '0%' : '50%',
+                        width: '50%'
+                      }}
+                    />
+                    <div 
+                      className="absolute top-1/2 -translate-y-1/2 w-3.5 h-3.5 bg-white border-2 border-blue-600 rounded-full shadow-xs transition-all duration-300 group-hover:scale-110"
+                      style={{
+                        left: language === 'en' ? '0%' : 'calc(100% - 14px)'
+                      }}
+                    />
+                  </div>
+
+                  <button
+                    onClick={() => language !== 'te' && onToggleLanguage()}
+                    className={`text-[11px] font-black tracking-tight px-1.5 py-0.5 rounded-md transition-all cursor-pointer ${
+                      language === 'te' 
+                        ? 'bg-blue-600 text-white shadow-2xs' 
+                        : 'text-slate-500 hover:text-slate-900 dark:hover:text-slate-200'
+                    }`}
+                  >
+                    తెలుగు
+                  </button>
+                </div>
+
+                {/* Vertical Divider between Language and Dark Mode */}
+                <div className="h-5 w-px bg-slate-200 dark:bg-slate-700 shrink-0" />
+
+                {/* 2. DARK MODE LINE SWITCHER (Moves Both Sides: Left = Light, Right = Dark) */}
+                {onToggleDarkMode && (
+                  <div 
+                    className="flex items-center gap-1.5 bg-white dark:bg-slate-900 px-2 py-1 rounded-xl border border-slate-200/90 dark:border-slate-700/90 shadow-2xs shrink-0 select-none"
+                    title={`Theme Line: Currently ${isDarkMode ? 'Dark Mode (Right)' : 'Light Mode (Left)'}. Click line to move sides.`}
+                  >
+                    <button
+                      onClick={() => isDarkMode && onToggleDarkMode()}
+                      className={`flex items-center gap-1 text-[11px] font-black px-1.5 py-0.5 rounded-md transition-all cursor-pointer ${
+                        !isDarkMode 
+                          ? 'bg-amber-400 text-slate-950 shadow-2xs' 
+                          : 'text-slate-500 hover:text-slate-900 dark:hover:text-slate-200'
+                      }`}
+                    >
+                      <Sun className="w-3 h-3 text-amber-500 fill-amber-500" />
+                      <span className="hidden sm:inline">Light</span>
+                    </button>
+
+                    {/* Interactive Slider Line connecting Light and Dark */}
+                    <div 
+                      onClick={onToggleDarkMode}
+                      className="relative w-9 h-3.5 flex items-center cursor-pointer group"
+                      title="Click line to slide between Light and Dark mode"
+                    >
+                      <div className="w-full h-1 bg-slate-200 dark:bg-slate-700 rounded-full" />
+                      <div 
+                        className="absolute h-1 bg-amber-500 dark:bg-indigo-400 rounded-full transition-all duration-300"
+                        style={{
+                          left: !isDarkMode ? '0%' : '50%',
+                          width: '50%'
+                        }}
+                      />
+                      <div 
+                        className={`absolute top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full shadow-xs transition-all duration-300 group-hover:scale-110 ${
+                          isDarkMode 
+                            ? 'bg-indigo-400 border-2 border-indigo-600' 
+                            : 'bg-amber-400 border-2 border-amber-500'
+                        }`}
+                        style={{
+                          left: !isDarkMode ? '0%' : 'calc(100% - 14px)'
+                        }}
+                      />
+                    </div>
+
+                    <button
+                      onClick={() => !isDarkMode && onToggleDarkMode()}
+                      className={`flex items-center gap-1 text-[11px] font-black px-1.5 py-0.5 rounded-md transition-all cursor-pointer ${
+                        isDarkMode 
+                          ? 'bg-indigo-600 text-white shadow-2xs' 
+                          : 'text-slate-500 hover:text-slate-900 dark:hover:text-slate-200'
+                      }`}
+                    >
+                      <Moon className="w-3 h-3 text-indigo-400" />
+                      <span className="hidden sm:inline">Dark</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* Bottom Visual Scroll Line Track that moves to both sides */}
+              <div 
+                className="w-full h-0.5 bg-slate-200 dark:bg-slate-700 rounded-full mt-0.5 overflow-hidden cursor-pointer"
+                onClick={() => {
+                  if (canScrollRight) handleScrollRight();
+                  else handleScrollLeft();
+                }}
+                title="Scroll line: Click to toggle scroll direction to both sides"
+              >
+                <div 
+                  className="h-full bg-blue-500 dark:bg-blue-400 rounded-full transition-all duration-200"
+                  style={{
+                    width: '55%',
+                    marginLeft: canScrollLeft ? (canScrollRight ? '22%' : '45%') : '0%'
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Scroll Right Button */}
+            <button
+              onClick={handleScrollRight}
+              className={`p-1 rounded-lg text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-white dark:hover:bg-slate-700 transition-all cursor-pointer ${
+                canScrollRight ? 'opacity-100' : 'opacity-40 hover:bg-transparent'
+              }`}
+              title="Scroll Language & Dark Mode Right ►"
+              aria-label="Scroll Controls Right"
+            >
+              <ChevronRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
+          {/* Vertical Divider Line */}
+          <div className="hidden sm:block h-7 w-px bg-slate-200 dark:bg-slate-700 mx-1 shrink-0" />
 
           {/* Primary Action Button matching design screenshot */}
           <button

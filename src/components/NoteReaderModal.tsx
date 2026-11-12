@@ -131,24 +131,53 @@ export const NoteReaderModal: React.FC<NoteReaderModalProps> = ({
   const unitHasMotionStyle = unit.topicAtAGlance && unit.topicAtAGlance.length > 0 && !!unit.topicAtAGlance[0].inBrief;
   const hasEnriched = enrichedData?.topics && enrichedData.topics.length > 0;
 
-  // Use either live AI generated data, built-in Motion-style data, enriched knowledge, or fallback
-  const currentGlance: TopicGlance[] = 
+  // Candidate raw topics: AI-generated > Enriched Static Knowledge > Motion-style Unit data > Unit topicAtAGlance > keyTopics map
+  const rawList: TopicGlance[] | undefined = 
     aiData?.topicAtAGlance || 
-    (unitHasMotionStyle ? unit.topicAtAGlance : (hasEnriched ? enrichedData.topics : unit.topicAtAGlance)) || 
-    unit.keyTopics.map((topic, i) => ({
-      topic: `${i + 1}. ${topic.replace(/^\d+\.\s*/, '')}`,
-      inBrief: `It is the core concept of ${topic.replace(/^\d+\.\s*/, '')} in ${unit.title}, defining its direct physical, mathematical, or real-world meaning.`,
-      definition: `${topic} is formally defined as the fundamental governing principle in ${unit.title} that specifies the relationship between state variables, inputs, and observed physical, chemical, or algorithmic outcomes.`,
-      quickTake: `Core ${subject.semesterOrGrade} concept frequently examined in university and school assessments.`,
-      detailedExplanation: `In-depth analysis of ${topic}: In this curriculum section, students examine the underlying theoretical axioms, laboratory observations, and mathematical relations of ${topic}. It establishes how energy, matter, or algorithmic models interact and formulates the exact conditions required for solving both conceptual questions and multi-step derivations in semester and board examinations.`,
-      keyPoints: [
-        `Master the formal standard definition, governing axiom, and state symbols for ${topic}.`,
-        `Key experimental observation, diagram arrowheads, and mathematical boundary conditions.`,
-        `Avoid common student traps: always write proper SI units (MKS) and intermediate algebraic steps.`,
-        `Examiner scoring requirement: underline key scientific or engineering terms for full method marks.`
-      ],
-      formulaOrEquation: i === 0 ? 'Standard Governing Invariant / Equation' : undefined
-    }));
+    (hasEnriched ? enrichedData!.topics : (unitHasMotionStyle ? unit.topicAtAGlance! : undefined));
+
+  const baseList: TopicGlance[] = (rawList && rawList.length > 0)
+    ? rawList 
+    : (unit.topicAtAGlance && unit.topicAtAGlance.length > 0 
+        ? unit.topicAtAGlance 
+        : unit.keyTopics.map((topic, i) => ({
+            topic: `${i + 1}. ${topic.replace(/^\d+\.\s*/, '')}`,
+            quickTake: `Essential ${subject.semesterOrGrade} foundational concept frequently tested in board and semester exams.`,
+            keyPoints: [
+              `Master the standard textbook definition and boundary conditions for ${topic}.`,
+              `Understand the underlying scientific or mathematical principles and real-world models.`,
+              `Follow step-by-step analytical derivation without skipping intermediate calculations.`,
+              `Always write proper standard SI units (MKS) and highlight keywords for maximum marks.`
+            ]
+          })));
+
+  // ALWAYS guarantee complete Motion-style architectural fidelity for EVERY topic in EVERY chapter across ALL schools and colleges
+  const currentGlance: TopicGlance[] = baseList.map((item, i) => {
+    const cleanTopic = item.topic.replace(/^\d+\.\s*/, '');
+    const inBrief = item.inBrief || `It is the fundamental concept of ${cleanTopic} in ${unit.title}, establishing its direct physical, mathematical, or algorithmic principle.`;
+    const definition = item.definition || `${cleanTopic} is formally defined as the fundamental governing principle in ${unit.title} that specifies the relationship between state variables, inputs, and observed outcomes according to the rationalized curriculum.`;
+    const detailedExplanation = item.detailedExplanation || `Comprehensive Analysis of ${cleanTopic}:\n\n` +
+      `In this curriculum section of ${unit.title} (${subject.name}), students examine the underlying theoretical axioms, laboratory observations, and mathematical relations of ${cleanTopic}. ` +
+      `It outlines the physical laws, thermodynamic equations, or algorithmic mechanisms required to evaluate state behaviors and boundary limits under diverse testing conditions.\n\n` +
+      `Furthermore, mastering ${cleanTopic} is essential for solving both conceptual assertion-reasoning problems and multi-step numerical derivations in examinations. ` +
+      `Examiners award full method marks when answers feature clear labeled diagrams with arrowheads, standard SI units, step-by-step formula substitutions, and highlighted technical keywords.`;
+    const quickTake = item.quickTake || `Key ${cleanTopic} principle for board and university examinations.`;
+    const keyPoints = item.keyPoints && item.keyPoints.length > 0 ? item.keyPoints : [
+      `Formal Statement: State the textbook definition and governing axiom verbatim.`,
+      `Formulation: Write the governing equation before substituting numerical values.`,
+      `Boundary Conditions: Analyze system behavior at initial and limiting equilibrium states.`,
+      `Scoring Rubric: Underline final calculated values with units for full credit.`
+    ];
+
+    return {
+      ...item,
+      inBrief,
+      definition,
+      detailedExplanation,
+      quickTake,
+      keyPoints
+    };
+  });
 
   const currentMindmap: ChapterMindmap = aiData?.mindmap || unit.mindmap || {
     center: unit.title,

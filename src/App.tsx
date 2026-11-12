@@ -155,6 +155,10 @@ export default function App() {
         onOpenRegistration={() => setIsRegistrationOpen(true)}
         isDarkMode={isDarkMode}
         onToggleDarkMode={toggleDarkMode}
+        activeSlide={activeSlide}
+        onChangeSlide={(slide) => setActiveSlide(slide)}
+        onPrevSlide={() => setActiveSlide(prev => (prev === 1 ? 3 : (prev - 1) as 1 | 2 | 3))}
+        onNextSlide={() => setActiveSlide(prev => (prev === 3 ? 1 : (prev + 1) as 1 | 2 | 3))}
       />
 
       {/* 2. Main Page Layout - Slide 1 (Big Blue Box), Slide 2 (Info & Benchmarks), or Slide 3 (Developer) */}
