@@ -105,7 +105,7 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
         {/* Navigation Zone */}
-        <nav className="hidden lg:flex items-center gap-1 text-sm font-medium text-slate-600">
+        <nav className="hidden 2xl:flex items-center gap-1 text-sm font-medium text-slate-600">
           {onGoHome && (
             <button
               onClick={onGoHome}
@@ -413,18 +413,18 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Vertical Divider Line */}
           <div className="hidden sm:block h-7 w-px bg-slate-200 dark:bg-slate-700 mx-1 shrink-0" />
 
-          {/* Primary Action Button matching design screenshot */}
+          {/* Primary Action Button */}
           <button
             onClick={onOpenNotePDF}
-            className="bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-medium text-xs sm:text-sm px-4 py-2.5 rounded-lg shadow-sm shadow-blue-500/25 transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer"
+            className="bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-medium text-xs sm:text-sm px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg shadow-sm shadow-blue-500/25 transition-all flex items-center gap-1.5 sm:gap-2 whitespace-nowrap cursor-pointer shrink-0"
           >
             <FileText className="w-4 h-4" />
-            <span className="hidden sm:inline">
+            <span className="hidden 2xl:inline">
               {language === 'te' 
                 ? 'యూనిట్ నోట్ PDF తెరవండి' 
                 : 'Select subject unit and open verified note PDF'}
             </span>
-            <span className="sm:hidden">
+            <span className="2xl:hidden">
               {language === 'te' ? 'నోట్ PDF' : 'Open Note PDF'}
             </span>
           </button>

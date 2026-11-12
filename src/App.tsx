@@ -22,7 +22,7 @@ import { MCQGameModal } from './components/MCQGameModal';
 import { RegistrationModal } from './components/RegistrationModal';
 import { SAMPLE_SUBJECTS, INSTITUTIONS } from './data/colleges';
 import { Subject, Unit, InstitutionId, UserAccount } from './types';
-import { Mic, FileCheck, Gamepad2, Home, Info, Code2, Sparkles, Mail, Settings, Sun, Moon } from 'lucide-react';
+import { Mic, FileCheck, Gamepad2, Home, Info, Code2, Sparkles, Mail, Settings, Sun, Moon, ChevronLeft, ChevronRight, Languages } from 'lucide-react';
 import { InfoSlideView } from './components/InfoSlideView';
 import { DeveloperSlideView } from './components/DeveloperSlideView';
 import { getStoredUser, subscribeUserChanges } from './services/userService';
@@ -164,42 +164,170 @@ export default function App() {
       {/* 2. Main Page Layout - Slide 1 (Big Blue Box), Slide 2 (Info & Benchmarks), or Slide 3 (Developer) */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
         
-        {/* Top of Slide Control Bar: Slide Indicator & Dedicated Dark Mode Toggle */}
-        <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-slate-200/90 dark:border-slate-800 rounded-2xl p-3 px-4 sm:px-5 shadow-xs flex flex-wrap items-center justify-between gap-3">
+        {/* Top of Slide Control Bar: Slide Indicator & Prominent Language + Dark Mode Line Sliders */}
+        <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/90 dark:border-slate-800 rounded-2xl p-3 px-4 sm:px-5 shadow-xs flex flex-wrap items-center justify-between gap-3">
+          
+          {/* Left: Slide Number & Description + Dual-Direction Slide Mover */}
           <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
             <span className="text-[11px] font-black uppercase tracking-wider bg-blue-100 dark:bg-blue-950/70 text-blue-800 dark:text-blue-300 px-2.5 py-1 rounded-md">
               Slide {activeSlide} of 3
             </span>
-            <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 hidden sm:inline">
-              {activeSlide === 1 && 'Home & Real-Time Syllabus Discovery'}
-              {activeSlide === 2 && 'Information, Curriculum Scale & Benchmarks'}
-              {activeSlide === 3 && 'Developer & Engineering Attribution'}
+
+            {/* Slide Mover Line (Moves both sides: ◄ 1 — 2 — 3 ►) */}
+            <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-xl border border-slate-200 dark:border-slate-700 shadow-2xs">
+              <button
+                onClick={() => setActiveSlide(prev => (prev === 1 ? 3 : ((prev - 1) as 1 | 2 | 3)))}
+                className="p-1 hover:bg-white dark:hover:bg-slate-700 rounded text-slate-700 dark:text-slate-300 hover:text-blue-600 transition-all cursor-pointer active:scale-90"
+                title="Move to Previous Slide ◄"
+              >
+                <ChevronLeft className="w-3.5 h-3.5" />
+              </button>
+
+              <div className="flex items-center gap-1.5 px-1.5">
+                {[1, 2, 3].map((slideNum) => (
+                  <button
+                    key={slideNum}
+                    onClick={() => setActiveSlide(slideNum as 1 | 2 | 3)}
+                    className={`w-5 h-5 rounded-md text-[10px] font-black transition-all cursor-pointer flex items-center justify-center ${
+                      activeSlide === slideNum
+                        ? 'bg-blue-600 text-white shadow-2xs scale-105'
+                        : 'text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/60'
+                    }`}
+                    title={`Go to Slide ${slideNum}`}
+                  >
+                    {slideNum}
+                  </button>
+                ))}
+              </div>
+
+              <button
+                onClick={() => setActiveSlide(prev => (prev === 3 ? 1 : ((prev + 1) as 1 | 2 | 3)))}
+                className="p-1 hover:bg-white dark:hover:bg-slate-700 rounded text-slate-700 dark:text-slate-300 hover:text-blue-600 transition-all cursor-pointer active:scale-90"
+                title="Move to Next Slide ►"
+              >
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            <span className="text-xs font-semibold text-slate-600 dark:text-slate-300 hidden md:inline">
+              {activeSlide === 1 && '• Home & Syllabus'}
+              {activeSlide === 2 && '• Curriculum & Benchmarks'}
+              {activeSlide === 3 && '• Developer & Credits'}
             </span>
           </div>
 
-          {/* Top of Slide Action Controls (Dark Mode Switch) */}
-          <div className="flex items-center gap-2 ml-auto">
-            <button
-              onClick={toggleDarkMode}
-              className={`px-3.5 py-1.5 rounded-xl border text-xs font-bold flex items-center gap-2 transition-all cursor-pointer shadow-xs active:scale-95 ${
-                isDarkMode 
-                  ? 'bg-slate-800 border-amber-400/40 text-amber-300 hover:bg-slate-700' 
-                  : 'bg-slate-100 hover:bg-slate-200 border-slate-300 text-slate-800'
-              }`}
-              title="Toggle Dark Mode at the top of the slide"
+          {/* Right: Language and Dark Mode Interactive Line Sliders (Move Both Sides) */}
+          <div className="flex items-center gap-2.5 flex-wrap ml-auto">
+            
+            {/* 1. LANGUAGE LINE SLIDER (Left = English, Right = Telugu) */}
+            <div 
+              className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700 shadow-2xs select-none"
+              title={`Language: ${language === 'en' ? 'English (Left)' : 'Telugu (Right)'}. Click line to move sides.`}
             >
-              {isDarkMode ? (
-                <>
-                  <Sun className="w-4 h-4 text-amber-400 fill-amber-400" />
-                  <span>Light Mode ☀️</span>
-                </>
-              ) : (
-                <>
-                  <Moon className="w-4 h-4 text-slate-700" />
-                  <span>Dark Mode 🌙</span>
-                </>
-              )}
-            </button>
+              <button
+                onClick={() => language !== 'en' && toggleLanguage()}
+                className={`text-[11px] font-black px-2 py-1 rounded-lg transition-all cursor-pointer ${
+                  language === 'en' 
+                    ? 'bg-blue-600 text-white shadow-xs' 
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                EN
+              </button>
+
+              {/* Moving Line Track */}
+              <div 
+                onClick={toggleLanguage}
+                className="relative w-8 sm:w-10 h-3 flex items-center cursor-pointer group"
+                title="Click line to toggle language side"
+              >
+                <div className="w-full h-1 bg-slate-300 dark:bg-slate-600 rounded-full" />
+                <div 
+                  className="absolute h-1 bg-blue-500 rounded-full transition-all duration-300"
+                  style={{
+                    left: language === 'en' ? '0%' : '50%',
+                    width: '50%'
+                  }}
+                />
+                <div 
+                  className="absolute top-1/2 -translate-y-1/2 w-3.5 h-3.5 bg-white border-2 border-blue-600 rounded-full shadow-xs transition-all duration-300 group-hover:scale-110"
+                  style={{
+                    left: language === 'en' ? '0%' : 'calc(100% - 14px)'
+                  }}
+                />
+              </div>
+
+              <button
+                onClick={() => language !== 'te' && toggleLanguage()}
+                className={`text-[11px] font-black px-2 py-1 rounded-lg transition-all cursor-pointer ${
+                  language === 'te' 
+                    ? 'bg-blue-600 text-white shadow-xs' 
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                తెలుగు
+              </button>
+            </div>
+
+            {/* Vertical Divider */}
+            <div className="h-6 w-px bg-slate-300 dark:bg-slate-700" />
+
+            {/* 2. DARK MODE LINE SLIDER (Left = Light, Right = Dark) */}
+            <div 
+              className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700 shadow-2xs select-none"
+              title={`Theme: ${isDarkMode ? 'Dark Mode (Right)' : 'Light Mode (Left)'}. Click line to move sides.`}
+            >
+              <button
+                onClick={() => isDarkMode && toggleDarkMode()}
+                className={`flex items-center gap-1 text-[11px] font-black px-2 py-1 rounded-lg transition-all cursor-pointer ${
+                  !isDarkMode 
+                    ? 'bg-amber-400 text-slate-950 shadow-xs' 
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                <Sun className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+                <span className="hidden sm:inline">Light</span>
+              </button>
+
+              {/* Moving Line Track */}
+              <div 
+                onClick={toggleDarkMode}
+                className="relative w-8 sm:w-10 h-3 flex items-center cursor-pointer group"
+                title="Click line to toggle dark mode side"
+              >
+                <div className="w-full h-1 bg-slate-300 dark:bg-slate-600 rounded-full" />
+                <div 
+                  className="absolute h-1 bg-amber-500 dark:bg-indigo-400 rounded-full transition-all duration-300"
+                  style={{
+                    left: !isDarkMode ? '0%' : '50%',
+                    width: '50%'
+                  }}
+                />
+                <div 
+                  className={`absolute top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full shadow-xs transition-all duration-300 group-hover:scale-110 ${
+                    isDarkMode 
+                      ? 'bg-indigo-400 border-2 border-indigo-600' 
+                      : 'bg-amber-400 border-2 border-amber-500'
+                  }`}
+                  style={{
+                    left: !isDarkMode ? '0%' : 'calc(100% - 14px)'
+                  }}
+                />
+              </div>
+
+              <button
+                onClick={() => !isDarkMode && toggleDarkMode()}
+                className={`flex items-center gap-1 text-[11px] font-black px-2 py-1 rounded-lg transition-all cursor-pointer ${
+                  isDarkMode 
+                    ? 'bg-indigo-600 text-white shadow-xs' 
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                <Moon className="w-3.5 h-3.5 text-indigo-400" />
+                <span className="hidden sm:inline">Dark</span>
+              </button>
+            </div>
+
           </div>
         </div>
 
